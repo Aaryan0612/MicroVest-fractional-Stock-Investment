@@ -263,6 +263,14 @@ textarea {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
+/* ── Navbar right cluster (theme toggle + optional CTA + hamburger) ── */
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
 /* ── Main Content ── */
 .main-content {
   max-width: var(--max-width);

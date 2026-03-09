@@ -6,7 +6,7 @@
     <title>MicroVest — Fractional Stock Investment Simulator</title>
     <meta
       name="description"
-      content="Learn to invest in the stock market with MicroVest. Trade fractional shares of Indian stocks with zero real risk."
+      content="Learn to invest in the Indian stock market with MicroVest. Trade fractional shares with zero real risk. Start with just ₹10."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,220 +20,503 @@
     <link rel="stylesheet" href="css/landing.css" />
   </head>
   <body class="page-landing">
-    <!-- Aurora Background -->
-    <div class="aurora-bg">
-      <div class="aurora-blob"></div>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar" id="navbar">
+    <!-- ══════════════════════════════════════════
+         NAVBAR
+    ══════════════════════════════════════════ -->
+    <nav class="navbar navbar--landing" id="navbar">
       <a href="index.html" class="navbar__brand">
         <span class="navbar__brand-icon">μ</span>
         MicroVest
       </a>
-      <button
-        class="navbar__hamburger"
-        id="nav-toggle"
-        aria-label="Toggle navigation"
-      >
-        <span></span><span></span><span></span>
-      </button>
-      <button
-        class="theme-toggle"
-        id="theme-toggle"
-        aria-label="Toggle theme"
-        title="Switch theme"
-      >
-        <span class="theme-icon">🌙</span>
-      </button>
+
+      <!-- Desktop nav links (centre) -->
       <ul class="navbar__links" id="nav-links">
-        <li>
-          <a href="#how-it-works" class="navbar__link">How it Works</a>
-        </li>
-        <li>
-          <a href="#featured-stocks" class="navbar__link">Explore Stocks</a>
-        </li>
-        <li>
-          <a
-            href="stocks.html"
-            class="btn btn-primary btn-sm"
-            style="margin-left: 1rem"
-            >Launch App →</a
-          >
-        </li>
+        <li><a href="#how-it-works" class="navbar__link">How It Works</a></li>
+        <li><a href="#featured-stocks" class="navbar__link">Stocks</a></li>
+        <li><a href="#testimonials" class="navbar__link">Stories</a></li>
+        <li><a href="education.html" class="navbar__link">Learn</a></li>
       </ul>
+
+      <!-- Right side actions -->
+      <div class="navbar__right">
+        <button
+          class="theme-toggle"
+          id="theme-toggle"
+          aria-label="Toggle theme"
+          title="Switch theme"
+        >
+          <span class="theme-icon">🌙</span>
+        </button>
+        <a href="stocks.html" class="btn btn-primary btn-sm navbar__cta"
+          >Launch App →</a
+        >
+        <button
+          class="navbar__hamburger"
+          id="nav-toggle"
+          aria-label="Toggle navigation"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </nav>
 
-    <main class="main-content">
-      <!-- ── Hero Section ── -->
-      <section class="hero-section">
-        <div class="hero-content">
-          <div class="hero-badge">🎓 Educational Simulator</div>
-          <h1 class="hero-title">
-            Own a piece of tomorrow,<br />
-            <span class="text-gradient">starting with ₹10.</span>
-          </h1>
-          <p class="hero-subtitle">
-            MicroVest is a simulated fractional investment platform. Master the
-            Indian stock market, diversify your portfolio, and learn to trade
-            without risking real money.
+    <!-- ══════════════════════════════════════════
+         HERO — full-viewport video background
+    ══════════════════════════════════════════ -->
+    <section class="hero-video-section" id="hero">
+      <!-- Background video -->
+      <div class="hero-video-wrap">
+        <video
+          class="hero-video"
+          src="4k_Dynamic_Stock_Market_Interface_Video_480P.mp4"
+          autoplay
+          loop
+          muted
+          playsinline
+          preload="auto"
+        ></video>
+        <div class="hero-video-overlay"></div>
+      </div>
+
+      <!-- Hero content -->
+      <div class="hero-content-wrap">
+        <div class="hero-pill">
+          <span class="hero-pill__dot"></span>
+          Live simulation active
+        </div>
+
+        <h1 class="hero-headline">
+          Own a piece of<br />
+          <span class="hero-headline--grad">tomorrow,</span><br />
+          starting with <span class="hero-headline--price">₹10.</span>
+        </h1>
+
+        <p class="hero-subline">
+          India's smartest fractional investment simulator. Master the market,
+          build a portfolio, and learn to trade — without risking real money.
+        </p>
+
+        <div class="hero-actions">
+          <a href="stocks.html" class="btn hero-cta-primary">
+            Start Investing Now
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 8h10M9 4l4 4-4 4"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+          <a href="education.html" class="btn hero-cta-secondary">
+            Learn the Basics
+          </a>
+        </div>
+
+        <!-- Trust bar -->
+        <div class="hero-trust-bar">
+          <div class="trust-item">
+            <span class="trust-item__num">10</span>
+            <span class="trust-item__label">Indian Stocks</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="trust-item__num">₹10</span>
+            <span class="trust-item__label">Minimum Trade</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="trust-item__num">0.5%</span>
+            <span class="trust-item__label">Simulated Fee</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="trust-item__num">2s</span>
+            <span class="trust-item__label">Price Updates</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating live ticker card -->
+      <div class="hero-ticker-float glass-card" id="hero-ticker">
+        <div class="ticker-preview__header">
+          <div class="ticker-info">
+            <span class="ticker-symbol">RELIANCE</span>
+            <span class="ticker-name">Reliance Industries</span>
+          </div>
+          <span class="badge badge--low">Low Risk</span>
+        </div>
+        <div class="ticker-preview__price-row">
+          <span class="ticker-price mono" id="hero-price">₹2850.00</span>
+          <span class="ticker-change mono text-gain" id="hero-change"
+            >+0.00%</span
+          >
+        </div>
+        <div class="ticker-preview__chart">
+          <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+            <polyline
+              id="hero-sparkline"
+              fill="none"
+              stroke="var(--color-gain)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              points="0,15 100,15"
+            ></polyline>
+          </svg>
+        </div>
+        <div class="ticker-preview__footer">
+          <div class="live-indicator">
+            <span class="live-indicator__dot"></span>
+            <span>Live Simulated Data</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll cue -->
+      <div class="hero-scroll-cue" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         HOOK LINES
+    ══════════════════════════════════════════ -->
+    <section class="hooks-section">
+      <div class="hooks-wrap">
+        <div class="hook-item">
+          <span class="hook-icon">📈</span>
+          <p class="hook-text">
+            Real market data.<br /><strong>Zero real risk.</strong>
           </p>
-          <div class="hero-actions">
-            <a href="stocks.html" class="btn btn-primary hero-btn">
-              Start Investing Now
-            </a>
-            <a href="education.html" class="btn btn-secondary hero-btn">
-              Learn the Basics
-            </a>
-          </div>
-          <div class="hero-stats">
-            <div class="stat-item">
-              <span class="stat-value">10</span>
-              <span class="stat-label">Indian Stocks</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-value">₹10</span>
-              <span class="stat-label">Minimum Trade</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-value">0.5%</span>
-              <span class="stat-label">Simulated Fee</span>
-            </div>
-          </div>
         </div>
-
-        <div class="hero-visual">
-          <!-- Ticker Preview Card -->
-          <div class="ticker-preview glass-card" id="hero-ticker">
-            <div class="ticker-preview__header">
-              <div class="ticker-info">
-                <span class="ticker-symbol">RELIANCE</span>
-                <span class="ticker-name">Reliance Industries</span>
-              </div>
-              <span class="badge badge--low">Low Risk</span>
-            </div>
-            <div class="ticker-preview__price-row">
-              <span class="ticker-price mono" id="hero-price">₹2850.00</span>
-              <span class="ticker-change mono text-gain" id="hero-change"
-                >+0.00%</span
-              >
-            </div>
-            <div class="ticker-preview__chart">
-              <svg viewBox="0 0 100 30" preserveAspectRatio="none">
-                <polyline
-                  id="hero-sparkline"
-                  fill="none"
-                  stroke="var(--color-gain)"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  points="0,15 100,15"
-                ></polyline>
-              </svg>
-            </div>
-            <div class="ticker-preview__footer">
-              <div class="live-indicator">
-                <span class="live-indicator__dot"></span>
-                <span>Live Simulated Data</span>
-              </div>
-            </div>
-          </div>
+        <div class="hook-divider"></div>
+        <div class="hook-item">
+          <span class="hook-icon">🧩</span>
+          <p class="hook-text">
+            Fractional shares.<br /><strong>Any amount, any stock.</strong>
+          </p>
         </div>
-      </section>
+        <div class="hook-divider"></div>
+        <div class="hook-item">
+          <span class="hook-icon">🎓</span>
+          <p class="hook-text">
+            Learn by doing.<br /><strong>Built for beginners.</strong>
+          </p>
+        </div>
+        <div class="hook-divider"></div>
+        <div class="hook-item">
+          <span class="hook-icon">⚡</span>
+          <p class="hook-text">
+            Portfolio analytics.<br /><strong>Tracking in real-time.</strong>
+          </p>
+        </div>
+      </div>
+    </section>
 
-      <!-- ── How It Works ── -->
+    <main class="main-content landing-main">
+      <!-- ══════════════════════════════════════════
+           HOW IT WORKS
+      ══════════════════════════════════════════ -->
       <section class="steps-section" id="how-it-works">
+        <div class="section-label">Simple by design</div>
         <h2 class="section-title">How MicroVest Works</h2>
+        <p class="section-desc">
+          Three steps. That's all it takes to start building your simulated
+          portfolio.
+        </p>
         <div class="steps-grid">
           <div class="step-card glass-card">
-            <div class="step-number">1</div>
+            <div class="step-number">01</div>
+            <div class="step-icon-wrap">🔍</div>
             <h3>Pick a Stock</h3>
             <p>
-              Browse 10 simulated Indian stocks. Filter by Low, Medium, or High
-              risk to match your investing style.
+              Browse 10 top Indian stocks — Reliance, TCS, Zomato and more.
+              Filter by risk level to match your style.
             </p>
+            <div class="step-tag">Risk Rating Filter</div>
           </div>
           <div class="step-card glass-card">
-            <div class="step-number">2</div>
+            <div class="step-number">02</div>
+            <div class="step-icon-wrap">💰</div>
             <h3>Buy a Fraction</h3>
             <p>
-              Can't afford a full share? No problem. Invest exactly the amount
-              you want, down to ₹10.
+              Can't afford a full share? Invest exactly what you want — even
+              ₹10. The calculator shows you exactly how many shares you'll get.
             </p>
+            <div class="step-tag">Fractional Calculator</div>
           </div>
           <div class="step-card glass-card">
-            <div class="step-number">3</div>
-            <h3>Track Portfolio</h3>
+            <div class="step-number">03</div>
+            <div class="step-icon-wrap">📊</div>
+            <h3>Track &amp; Learn</h3>
             <p>
-              Watch your portfolio value change in real-time as prices update
-              every 2 seconds. Analyze your gains and losses.
+              Watch your portfolio value update every 2 seconds. See gains,
+              losses, and distribution charts that make analytics crystal clear.
             </p>
+            <div class="step-tag">Live Portfolio</div>
           </div>
         </div>
       </section>
 
-      <!-- ── Featured Stocks (Static Preview) ── -->
+      <!-- ══════════════════════════════════════════
+           FEATURED STOCKS
+      ══════════════════════════════════════════ -->
       <section class="featured-section" id="featured-stocks">
+        <div class="section-label">What's inside</div>
         <div class="featured-header">
-          <h2 class="section-title">Featured Stocks</h2>
-          <a href="stocks.html" class="btn btn-ghost">View All 10 Stocks →</a>
+          <h2 class="section-title" style="margin-bottom: 0">
+            Featured Stocks
+          </h2>
+          <a href="stocks.html" class="btn btn-ghost featured-all-link"
+            >View All 10 →</a
+          >
         </div>
         <div class="featured-grid">
-          <!-- Card 1 -->
-          <div class="featured-card glass-card">
+          <a href="stocks.html" class="featured-card glass-card">
             <div class="f-card-top">
               <span class="f-ticker">TCS</span>
               <span class="f-risk low">Low Risk</span>
             </div>
             <p class="f-name">Tata Consultancy Services</p>
-            <div class="f-price-row">
-              <span class="f-price">₹3940.00</span>
+            <div class="f-bottom">
+              <span class="f-price">₹3,940</span>
+              <span class="f-sector">Technology</span>
             </div>
-          </div>
-          <!-- Card 2 -->
-          <div class="featured-card glass-card">
+          </a>
+          <a href="stocks.html" class="featured-card glass-card">
             <div class="f-card-top">
               <span class="f-ticker">INFY</span>
-              <span class="f-risk medium">Medium Risk</span>
+              <span class="f-risk medium">Med Risk</span>
             </div>
             <p class="f-name">Infosys Ltd</p>
-            <div class="f-price-row">
-              <span class="f-price">₹1555.00</span>
+            <div class="f-bottom">
+              <span class="f-price">₹1,555</span>
+              <span class="f-sector">Technology</span>
             </div>
-          </div>
-          <!-- Card 3 -->
-          <div class="featured-card glass-card">
+          </a>
+          <a href="stocks.html" class="featured-card glass-card">
+            <div class="f-card-top">
+              <span class="f-ticker">RELIANCE</span>
+              <span class="f-risk low">Low Risk</span>
+            </div>
+            <p class="f-name">Reliance Industries</p>
+            <div class="f-bottom">
+              <span class="f-price">₹2,850</span>
+              <span class="f-sector">Energy &amp; Retail</span>
+            </div>
+          </a>
+          <a href="stocks.html" class="featured-card glass-card">
             <div class="f-card-top">
               <span class="f-ticker">ZOMATO</span>
               <span class="f-risk high">High Risk</span>
             </div>
             <p class="f-name">Zomato Ltd</p>
-            <div class="f-price-row">
-              <span class="f-price">₹224.00</span>
+            <div class="f-bottom">
+              <span class="f-price">₹224</span>
+              <span class="f-sector">Food Tech</span>
+            </div>
+          </a>
+          <a href="stocks.html" class="featured-card glass-card">
+            <div class="f-card-top">
+              <span class="f-ticker">HDFCBANK</span>
+              <span class="f-risk low">Low Risk</span>
+            </div>
+            <p class="f-name">HDFC Bank Ltd</p>
+            <div class="f-bottom">
+              <span class="f-price">₹1,672</span>
+              <span class="f-sector">Banking</span>
+            </div>
+          </a>
+          <a
+            href="stocks.html"
+            class="featured-card glass-card featured-card--cta"
+          >
+            <div class="f-cta-inner">
+              <span class="f-cta-icon">+5</span>
+              <p>More stocks inside</p>
+              <span class="f-cta-link">Explore All →</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════
+           TESTIMONIALS
+      ══════════════════════════════════════════ -->
+      <section class="testimonials-section" id="testimonials">
+        <div class="section-label">Student stories</div>
+        <h2 class="section-title">What Learners Say</h2>
+        <div class="testimonials-grid">
+          <div class="testimonial-card glass-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">
+              "I always thought investing was only for rich people. MicroVest
+              showed me I can start with literally ₹10. The fractional
+              calculator is genius."
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">AP</div>
+              <div>
+                <div class="testimonial-name">Arjun P.</div>
+                <div class="testimonial-role">B.Com Student, Mumbai</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card glass-card testimonial-card--featured">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">
+              "The real-time price simulation is insane. Watching my ZOMATO
+              position bleed red taught me more about risk than any textbook
+              ever did."
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">SM</div>
+              <div>
+                <div class="testimonial-name">Sneha M.</div>
+                <div class="testimonial-role">MBA Finance, Pune</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card glass-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">
+              "The portfolio staircase chart showing each purchase — I finally
+              understand what 'cost averaging' actually means. No finance book
+              explained it this clearly."
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">RK</div>
+              <div>
+                <div class="testimonial-name">Rahul K.</div>
+                <div class="testimonial-role">CSE Student, Bangalore</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ── Disclaimer ── -->
+      <!-- ══════════════════════════════════════════
+           FEATURES BENTO
+      ══════════════════════════════════════════ -->
+      <section class="features-section">
+        <div class="section-label">Built different</div>
+        <h2 class="section-title">Everything a real trader needs</h2>
+        <div class="features-bento">
+          <div class="bento-card bento-card--wide glass-card">
+            <div class="bento-icon">📡</div>
+            <h3>Real-Time Price Simulation</h3>
+            <p>
+              Prices update every 2 seconds using a dampened random walk model —
+              the same mathematics behind real market microstructure.
+            </p>
+            <div class="bento-tag">Brownian Motion Model</div>
+          </div>
+          <div class="bento-card glass-card">
+            <div class="bento-icon">🔢</div>
+            <h3>Fractional Share Calculator</h3>
+            <p>
+              Enter any amount. Instantly see how many shares you'll receive,
+              fee breakdown included.
+            </p>
+          </div>
+          <div class="bento-card glass-card">
+            <div class="bento-icon">⚠️</div>
+            <h3>52W High / Low &amp; Risk Ratings</h3>
+            <p>
+              Every stock shows its 52-week range and a risk badge — Low,
+              Medium, or High — always visible.
+            </p>
+          </div>
+          <div class="bento-card glass-card">
+            <div class="bento-icon">📉</div>
+            <h3>Live Performance Chart</h3>
+            <p>
+              See every stock's Invested vs. Current Value side-by-side,
+              updating live with green and red bars.
+            </p>
+          </div>
+          <div class="bento-card bento-card--wide glass-card">
+            <div class="bento-icon">🪜</div>
+            <h3>Investment Staircase</h3>
+            <p>
+              The "Value Over Time" chart shows each purchase as a stair step —
+              like Groww — so you can see exactly how your cost basis grew and
+              how your portfolio performed against it. Persists across sessions.
+            </p>
+            <div class="bento-tag">Persists across sessions</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════
+           FINAL CTA BANNER
+      ══════════════════════════════════════════ -->
+      <section class="cta-banner glass-card">
+        <div class="cta-banner__content">
+          <h2 class="cta-banner__title">
+            Ready to start your<br /><span class="text-gradient"
+              >investing journey?</span
+            >
+          </h2>
+          <p class="cta-banner__sub">
+            No real money. No risk. Just you and the market.
+          </p>
+          <div class="cta-banner__actions">
+            <a href="stocks.html" class="btn hero-cta-primary"
+              >Launch the App →</a
+            >
+            <a href="education.html" class="btn hero-cta-secondary"
+              >Read the Basics First</a
+            >
+          </div>
+        </div>
+        <div class="cta-banner__badge">
+          <div class="cta-badge-ring">
+            <span>100%</span>
+            <small>Simulated</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
       <section class="disclaimer-section glass-card">
         <h3>⚠️ Educational Simulator Only</h3>
         <p>
           MicroVest is a simulated environment built for educational purposes.
-          The stock prices, companies, and transactions on this platform are
+          Stock prices, companies, and transactions on this platform are
           <strong>not real</strong>. MicroVest does not connect to real
-          financial markets and cannot process actual money. Do not use this
-          platform as financial advice.
+          financial markets and cannot process actual money. Do not use this as
+          financial advice.
         </p>
       </section>
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
-      <p>
-        MicroVest &copy; 2026 — Simulated platform for educational purposes. Not
-        real financial advice.
-      </p>
+    <footer class="footer footer--landing">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <span
+            class="navbar__brand-icon"
+            style="width: 28px; height: 28px; font-size: 14px"
+            >μ</span
+          >
+          <span>MicroVest</span>
+        </div>
+        <div class="footer__links">
+          <a href="stocks.html">Stocks</a>
+          <a href="portfolio.html">Portfolio</a>
+          <a href="education.html">Learn</a>
+        </div>
+        <p class="footer__copy">
+          MicroVest &copy; 2026 — Simulated platform. Not real financial advice.
+        </p>
+      </div>
     </footer>
 
     <script src="js/landing.js"></script>

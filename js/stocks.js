@@ -30,6 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ── Render Stock Cards ──
 function renderStocks(stocks) {
+  // Destroy stale Chart.js instances — canvas refs change on every re-render
+  Object.values(sparklineCharts).forEach((c) => c.destroy());
+  for (const key in sparklineCharts) delete sparklineCharts[key];
+
   const grid = document.getElementById("stocks-grid");
 
   if (stocks.length === 0) {
@@ -83,10 +87,8 @@ function renderStocks(stocks) {
     })
     .join("");
 
-  // Init range bars + sparklines
+  // Init sparklines
   stocks.forEach((stock) => {
-    const ps = priceState.get(stock.ticker);
-    updateRangeBar(stock.ticker, ps ? ps.price : stock.basePrice);
     const history = sim ? sim.getPriceHistory(stock.ticker) : [stock.basePrice];
     updateSparkline(stock.ticker, history || [stock.basePrice]);
   });
@@ -385,9 +387,10 @@ function drawModalChart(ticker, history) {
           data: history,
           borderColor: color,
           backgroundColor: gradient,
-          borderWidth: 3,
+          borderWidth: 2.5,
           pointRadius: 0,
           pointHoverRadius: 6,
+          pointHoverBackgroundColor: color,
           fill: true,
           tension: 0.4,
         },
@@ -396,14 +399,22 @@ function drawModalChart(ticker, history) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: { duration: 0 }, // Handled by our own update logic for smoothness
+      animation: { duration: 300 },
       interaction: { mode: "index", intersect: false },
       plugins: {
         legend: { display: false },
         tooltip: {
+          backgroundColor: "rgba(10,14,26,0.92)",
+          borderColor: "rgba(148,163,184,0.2)",
+          borderWidth: 1,
+          titleColor: "#f1f5f9",
+          bodyColor: "#94a3b8",
+          padding: 12,
+          cornerRadius: 8,
+          displayColors: false,
           callbacks: {
             label: function (context) {
-              return "₹" + context.parsed.y.toFixed(2);
+              return " ₹" + context.parsed.y.toFixed(2);
             },
           },
         },
@@ -414,11 +425,17 @@ function drawModalChart(ticker, history) {
           display: true,
           position: "right",
           grid: { color: "rgba(255,255,255,0.05)" },
+          ticks: {
+            color: "rgba(148,163,184,0.75)",
+            font: { size: 10, family: "'JetBrains Mono',monospace" },
+            callback: (v) => "₹" + Number(v).toFixed(0),
+            maxTicksLimit: 5,
+          },
           min: Math.min(...history) * 0.98,
           max: Math.max(...history) * 1.02,
         },
       },
-      layout: { padding: 0 },
+      layout: { padding: { left: 0, right: 4, top: 4, bottom: 0 } },
     },
   });
 }
@@ -542,6 +559,14 @@ function confirmPurchaseModal() {
   }
 
   localStorage.setItem("portfolio", JSON.stringify(portfolio));
+
+  // Persist this investment step so the portfolio staircase chart can replay it
+  const totalInvested = portfolio.reduce((sum, h) => sum + h.invested, 0);
+  const pLog = JSON.parse(localStorage.getItem("mv-purchase-log") || "[]");
+  pLog.push({ invested: parseFloat(totalInvested.toFixed(2)) });
+  if (pLog.length > 60) pLog.shift();
+  localStorage.setItem("mv-purchase-log", JSON.stringify(pLog));
+
   closeModal();
 
   const stock = STOCKS.find((s) => s.ticker === currentModalTicker);

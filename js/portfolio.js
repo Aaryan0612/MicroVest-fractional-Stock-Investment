@@ -5,8 +5,10 @@
    ============================================ */
 
 let sim;
-const portfolioValueHistory = []; // Pass 5: track value over time
+const portfolioValueHistory = []; // portfolio value snapshots
+const portfolioInvestedHistory = []; // invested amount snapshots (stepped)
 let trendChartInstance = null;
+let performanceChartInstance = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
@@ -23,18 +25,21 @@ document.addEventListener("DOMContentLoaded", () => {
         renderAll(h, prices);
         // Pass 5: record snapshot for trend chart
         const totals = calculateTotals(h, prices);
-        recordValueSnapshot(totals.totalValue);
+        recordValueSnapshot(totals.totalValue, totals.invested);
         renderPending = false;
       }, 0);
     }
   });
+
+  // Pre-populate staircase chart history from persisted purchase log
+  initHistoryFromLog();
 
   sim.start();
   renderAll(holdings, sim.getCurrentPrices());
 
   // Record initial value
   const initTotals = calculateTotals(holdings, sim.getCurrentPrices());
-  recordValueSnapshot(initTotals.totalValue);
+  recordValueSnapshot(initTotals.totalValue, initTotals.invested);
 
   initNavToggle();
 });
@@ -63,7 +68,7 @@ function calculateTotals(holdings, prices) {
 function renderAll(holdings, prices) {
   const totals = calculateTotals(holdings, prices);
   renderSummaryCards(totals);
-  renderChart(holdings, prices);
+  renderPerformanceChart(holdings, prices);
   renderTable(holdings, prices);
 }
 
@@ -79,7 +84,7 @@ function renderSummaryCards(totals) {
       getCurrentValue(totalValueEl),
       totals.totalValue,
       800,
-      "$",
+      "₹",
     );
   if (investedEl)
     animateValue(
@@ -87,7 +92,7 @@ function renderSummaryCards(totals) {
       getCurrentValue(investedEl),
       totals.invested,
       800,
-      "$",
+      "₹",
     );
 
   if (gainLossEl) {
@@ -97,7 +102,7 @@ function renderSummaryCards(totals) {
       getCurrentValue(gainLossEl),
       Math.abs(totals.gainLoss),
       800,
-      sign + "$",
+      sign + "₹",
     );
     gainLossEl.className = `summary-card__value text-mono ${totals.gainLoss >= 0 ? "text-gain" : "text-loss"}`;
   }
@@ -119,6 +124,7 @@ function renderSummaryCards(totals) {
 function getCurrentValue(el, ignoreSuffix = "") {
   if (!el) return 0;
   const text = el.textContent
+    .replace("₹", "")
     .replace("$", "")
     .replace("+", "")
     .replace(ignoreSuffix, "");
@@ -148,40 +154,127 @@ function animateValue(obj, start, end, duration, prefix = "", suffix = "") {
   window.requestAnimationFrame(step);
 }
 
-function renderChart(holdings, prices) {
-  const container = document.getElementById("chart-bars");
-  if (!container) return;
+function renderPerformanceChart(holdings, prices) {
+  const canvas = document.getElementById("perf-chart");
+  const emptyMsg = document.getElementById("empty-perf-chart");
+  if (!canvas) return;
 
   if (holdings.length === 0) {
-    container.innerHTML =
-      '<p style="color: var(--text-muted); text-align: center; padding: var(--space-6);">No holdings to display.</p>';
+    if (emptyMsg) emptyMsg.hidden = false;
+    if (performanceChartInstance) {
+      performanceChartInstance.destroy();
+      performanceChartInstance = null;
+    }
     return;
   }
 
-  let totalValue = 0;
-  const holdingValues = holdings.map((h) => {
-    const price = prices.get(h.ticker) ?? h.avgBuy;
-    const value = price * h.shares;
-    totalValue += value;
-    return { ticker: h.ticker, value };
+  if (emptyMsg) emptyMsg.hidden = true;
+
+  const labels = holdings.map((h) => h.ticker);
+  const investedData = holdings.map((h) => parseFloat(h.invested.toFixed(2)));
+  const currentData = holdings.map((h) =>
+    parseFloat(((prices.get(h.ticker) ?? h.avgBuy) * h.shares).toFixed(2)),
+  );
+
+  const gainBg = currentData.map((v, i) =>
+    v >= investedData[i] ? "rgba(34,197,94,0.7)" : "rgba(239,68,68,0.7)",
+  );
+  const gainBorder = currentData.map((v, i) =>
+    v >= investedData[i] ? "rgba(34,197,94,1)" : "rgba(239,68,68,1)",
+  );
+
+  if (performanceChartInstance) {
+    performanceChartInstance.data.labels = labels;
+    performanceChartInstance.data.datasets[0].data = investedData;
+    performanceChartInstance.data.datasets[1].data = currentData;
+    performanceChartInstance.data.datasets[1].backgroundColor = gainBg;
+    performanceChartInstance.data.datasets[1].borderColor = gainBorder;
+    performanceChartInstance.update("none");
+    return;
+  }
+
+  const ctx = canvas.getContext("2d");
+  performanceChartInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Invested (₹)",
+          data: investedData,
+          backgroundColor: "rgba(99,102,241,0.55)",
+          borderColor: "rgba(99,102,241,0.9)",
+          borderWidth: 2,
+          borderRadius: 8,
+          borderSkipped: false,
+        },
+        {
+          label: "Current Value (₹)",
+          data: currentData,
+          backgroundColor: gainBg,
+          borderColor: gainBorder,
+          borderWidth: 2,
+          borderRadius: 8,
+          borderSkipped: false,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 500, easing: "easeOutQuart" },
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          align: "end",
+          labels: {
+            color: "rgba(241,245,249,0.85)",
+            font: { family: "'Inter',sans-serif", size: 12 },
+            boxWidth: 12,
+            borderRadius: 4,
+            padding: 16,
+          },
+        },
+        tooltip: {
+          backgroundColor: "rgba(10,14,26,0.95)",
+          borderColor: "rgba(148,163,184,0.2)",
+          borderWidth: 1,
+          titleColor: "#f1f5f9",
+          bodyColor: "#94a3b8",
+          padding: 14,
+          cornerRadius: 10,
+          callbacks: {
+            label: (ctx) =>
+              ` ${ctx.dataset.label}: ₹${ctx.parsed.y.toFixed(2)}`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: "rgba(148,163,184,0.9)",
+            font: {
+              family: "'JetBrains Mono',monospace",
+              size: 11,
+              weight: "500",
+            },
+          },
+          grid: { color: "rgba(255,255,255,0.04)" },
+          border: { color: "rgba(255,255,255,0.08)" },
+        },
+        y: {
+          ticks: {
+            color: "rgba(148,163,184,0.9)",
+            callback: (v) => "₹" + Number(v).toFixed(0),
+          },
+          grid: { color: "rgba(255,255,255,0.06)" },
+          border: { color: "rgba(255,255,255,0.08)" },
+          beginAtZero: true,
+        },
+      },
+    },
   });
-
-  holdingValues.sort((a, b) => b.value - a.value);
-
-  container.innerHTML = holdingValues
-    .map((hv) => {
-      const pct = totalValue > 0 ? (hv.value / totalValue) * 100 : 0;
-      return `
-        <div class="chart-bar">
-          <span class="chart-bar__label">${hv.ticker}</span>
-          <div class="chart-bar__track">
-            <div class="chart-bar__fill" style="--bar-width: ${pct}%"></div>
-          </div>
-          <span class="chart-bar__value">${pct.toFixed(1)}%</span>
-        </div>
-      `;
-    })
-    .join("");
 }
 
 function renderTable(holdings, prices) {
@@ -235,95 +328,180 @@ function renderTable(holdings, prices) {
     .join("");
 }
 
-// ── Pass 5: Value Trend Chart ──
-function recordValueSnapshot(totalValue) {
+// ── Replay purchase log to pre-build staircase on page load ──
+function initHistoryFromLog() {
+  const log = JSON.parse(localStorage.getItem("mv-purchase-log") || "[]");
+  if (log.length === 0) return;
+
+  // Each entry becomes one stair step.
+  // Value history starts neutral (= invested amount at purchase time)
+  // and will diverge in real-time once live snapshots start appending.
+  log.forEach((entry) => {
+    portfolioInvestedHistory.push(entry.invested);
+    portfolioValueHistory.push(entry.invested);
+  });
+}
+
+// ── Value Trend Chart (Groww-style: value + stepped invested) ──
+function recordValueSnapshot(totalValue, totalInvested) {
   portfolioValueHistory.push(totalValue);
-  if (portfolioValueHistory.length > 40) portfolioValueHistory.shift();
+  portfolioInvestedHistory.push(totalInvested);
+  // Keep up to 80 snapshots (~160 seconds of history)
+  if (portfolioValueHistory.length > 80) {
+    portfolioValueHistory.shift();
+    portfolioInvestedHistory.shift();
+  }
   updateTrendChart();
 }
 
 function updateTrendChart() {
   const canvas = document.getElementById("portfolio-trend-chart");
-  const startEl = document.getElementById("trend-start");
-  const endEl = document.getElementById("trend-end");
-
   if (!canvas || portfolioValueHistory.length < 2) return;
 
-  const history = portfolioValueHistory;
+  const valueHist = portfolioValueHistory;
+  const investedHist = portfolioInvestedHistory;
+  const latestValue = valueHist[valueHist.length - 1];
+  const latestInvested = investedHist[investedHist.length - 1];
 
-  if (trendChartInstance) {
-    trendChartInstance.data.labels = history.map((_, i) => i);
-    trendChartInstance.data.datasets[0].data = history;
-    trendChartInstance.update("none");
-  } else {
-    const ctx = canvas.getContext("2d");
-
-    // Create gradient
-    const gradient = ctx.createLinearGradient(0, 0, 0, 80);
-    gradient.addColorStop(0, "rgba(0, 212, 255, 0.4)");
-    gradient.addColorStop(1, "rgba(0, 212, 255, 0)");
-
-    trendChartInstance = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: history.map((_, i) => i),
-        datasets: [
-          {
-            data: history,
-            borderColor: "#00d4ff",
-            backgroundColor: gradient,
-            borderWidth: 2,
-            pointRadius: 0,
-            pointHoverRadius: 4,
-            fill: true,
-            tension: 0.4,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 0 },
-        interaction: { mode: "index", intersect: false },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                return "₹" + context.parsed.y.toFixed(2);
-              },
-            },
-          },
-        },
-        scales: {
-          x: { display: false },
-          y: {
-            display: false,
-            min: Math.min(...history) * 0.95,
-            max: Math.max(...history) * 1.05,
-          },
-        },
-        layout: { padding: 0 },
-      },
-    });
-  }
-
-  if (startEl)
-    animateValue(startEl, getCurrentValue(startEl), history[0], 800, "₹");
-  if (endEl)
+  // Update Groww-style header live values
+  const liveValueEl = document.getElementById("trend-value-live");
+  const liveInvestedEl = document.getElementById("trend-invested-live");
+  if (liveValueEl)
     animateValue(
-      endEl,
-      getCurrentValue(endEl),
-      history[history.length - 1],
-      800,
+      liveValueEl,
+      getCurrentValue(liveValueEl),
+      latestValue,
+      600,
       "₹",
     );
+  if (liveInvestedEl)
+    animateValue(
+      liveInvestedEl,
+      getCurrentValue(liveInvestedEl),
+      latestInvested,
+      600,
+      "₹",
+    );
+
+  // Compute y-axis bounds across both datasets
+  const allVals = [...valueHist, ...investedHist].filter((v) => v > 0);
+  const yMin = allVals.length ? Math.min(...allVals) * 0.97 : 0;
+  const yMax = allVals.length ? Math.max(...allVals) * 1.03 : 1;
+
+  if (trendChartInstance) {
+    // Live update — no animation for smoothness
+    trendChartInstance.data.labels = valueHist.map((_, i) => i);
+    trendChartInstance.data.datasets[0].data = valueHist;
+    trendChartInstance.data.datasets[1].data = investedHist;
+    trendChartInstance.options.scales.y.min = yMin;
+    trendChartInstance.options.scales.y.max = yMax;
+    trendChartInstance.update("none");
+    return;
+  }
+
+  // First render — build the chart
+  const ctx = canvas.getContext("2d");
+  const gradient = ctx.createLinearGradient(0, 0, 0, 220);
+  gradient.addColorStop(0, "rgba(99, 102, 241, 0.28)");
+  gradient.addColorStop(0.6, "rgba(99, 102, 241, 0.08)");
+  gradient.addColorStop(1, "rgba(99, 102, 241, 0)");
+
+  trendChartInstance = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: valueHist.map((_, i) => i),
+      datasets: [
+        {
+          // Dataset 0: Portfolio value — solid, filled
+          label: "Portfolio Value",
+          data: valueHist,
+          borderColor: "#6366f1",
+          backgroundColor: gradient,
+          borderWidth: 2.5,
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: "#6366f1",
+          pointHoverBorderColor: "#fff",
+          pointHoverBorderWidth: 2,
+          fill: true,
+          tension: 0.35,
+          order: 1,
+        },
+        {
+          // Dataset 1: Invested — stepped dashed line, no fill
+          // stepped:'before' = stays flat then jumps → staircase effect
+          label: "Invested",
+          data: investedHist,
+          borderColor: "rgba(148, 163, 184, 0.7)",
+          backgroundColor: "transparent",
+          borderWidth: 2,
+          borderDash: [7, 5],
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(148,163,184,0.9)",
+          fill: false,
+          stepped: "before",
+          order: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 0 },
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "rgba(10, 14, 26, 0.92)",
+          borderColor: "rgba(148, 163, 184, 0.2)",
+          borderWidth: 1,
+          titleColor: "#f1f5f9",
+          bodyColor: "#94a3b8",
+          padding: 12,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: () => "",
+            label: (ctx) =>
+              ` ${ctx.dataset.label}: ₹${ctx.parsed.y.toFixed(2)}`,
+          },
+        },
+      },
+      scales: {
+        x: { display: false },
+        y: {
+          display: false,
+          min: yMin,
+          max: yMax,
+        },
+      },
+      layout: { padding: { left: 4, right: 4, top: 8, bottom: 0 } },
+    },
+  });
 }
 
 function removeHolding(ticker) {
   const portfolio = JSON.parse(localStorage.getItem("portfolio") || "[]");
   const updated = portfolio.filter((h) => h.ticker !== ticker);
   localStorage.setItem("portfolio", JSON.stringify(updated));
+
+  // Log the step-down so the staircase reflects the removal
+  const totalInvested = updated.reduce((sum, h) => sum + h.invested, 0);
+  const pLog = JSON.parse(localStorage.getItem("mv-purchase-log") || "[]");
+  pLog.push({ invested: parseFloat(totalInvested.toFixed(2)) });
+  if (pLog.length > 60) pLog.shift();
+  localStorage.setItem("mv-purchase-log", JSON.stringify(pLog));
+
+  // Reset in-memory history and rebuild from updated log so chart is clean
+  portfolioValueHistory.length = 0;
+  portfolioInvestedHistory.length = 0;
+  if (trendChartInstance) {
+    trendChartInstance.destroy();
+    trendChartInstance = null;
+  }
+  initHistoryFromLog();
+
   renderAll(updated, sim.getCurrentPrices());
   showToast(`Removed ${ticker} from portfolio.`, "success");
 }

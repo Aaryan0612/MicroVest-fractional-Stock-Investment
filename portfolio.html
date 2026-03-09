@@ -83,19 +83,19 @@
         <article class="summary-card summary-card--total">
           <span class="summary-card__label">Total Value</span>
           <span class="summary-card__value text-mono" id="total-value"
-            >$0.00</span
+            >₹0.00</span
           >
         </article>
         <article class="summary-card">
           <span class="summary-card__label">Invested</span>
           <span class="summary-card__value text-mono" id="total-invested"
-            >$0.00</span
+            >₹0.00</span
           >
         </article>
         <article class="summary-card">
           <span class="summary-card__label">Total Gain/Loss</span>
           <span class="summary-card__value text-mono" id="total-gainloss"
-            >$0.00</span
+            >₹0.00</span
           >
         </article>
         <article class="summary-card">
@@ -108,29 +108,56 @@
 
       <!-- Value Trend Chart -->
       <section class="value-trend-section" aria-label="Portfolio value trend">
-        <h2>Value Over Time</h2>
         <div class="trend-chart-container">
-          <canvas
-            id="portfolio-trend-chart"
-            class="trend-chart"
-            height="80"
-          ></canvas>
-          <div class="trend-labels">
-            <span class="trend-label-start" id="trend-start">--</span>
-            <span class="trend-label-end" id="trend-end">--</span>
+          <!-- Groww-style header -->
+          <div class="trend-header">
+            <div class="trend-header__side">
+              <div class="trend-header__meta">
+                <span class="trend-legend-line trend-legend-line--value"></span>
+                <span class="trend-header__label">Portfolio value</span>
+              </div>
+              <span class="trend-header__amount text-mono" id="trend-value-live"
+                >₹0.00</span
+              >
+            </div>
+            <div class="trend-header__side" style="text-align: right">
+              <div class="trend-header__meta" style="justify-content: flex-end">
+                <span
+                  class="trend-legend-line trend-legend-line--invested"
+                ></span>
+                <span class="trend-header__label">Invested</span>
+              </div>
+              <span
+                class="trend-header__amount text-mono"
+                id="trend-invested-live"
+                >₹0.00</span
+              >
+            </div>
+          </div>
+          <!-- Chart -->
+          <div class="chart-canvas-wrap trend-canvas-wrap">
+            <canvas id="portfolio-trend-chart"></canvas>
           </div>
         </div>
       </section>
 
-      <!-- Allocation Chart -->
+      <!-- Performance Chart -->
       <section
         class="chart-section glass-card"
-        aria-label="Portfolio allocation chart"
+        aria-label="Stock performance chart"
       >
-        <h2 class="chart-section__title">Portfolio Allocation</h2>
-        <div class="chart-bars" id="chart-bars">
-          <!-- Bars rendered by JS -->
+        <div class="chart-section__head">
+          <h2 class="chart-section__title">Stock Performance</h2>
+          <span class="chart-section__subtitle"
+            >Invested vs. Current Value — live</span
+          >
         </div>
+        <div class="chart-canvas-wrap perf-canvas-wrap">
+          <canvas id="perf-chart"></canvas>
+        </div>
+        <p class="empty-chart-msg" id="empty-perf-chart" hidden>
+          No holdings yet. <a href="stocks.html">Start investing →</a>
+        </p>
       </section>
 
       <!-- Holdings Table -->

@@ -37,7 +37,7 @@ class PriceSimulator {
 
       const hist = this.#history.get(stock.ticker);
       hist.push(stock.price);
-      if (hist.length > 10) hist.shift();
+      if (hist.length > 60) hist.shift();
 
       this.#callbacks.forEach((fn) => fn(stock.ticker, stock.price, changePct));
     });

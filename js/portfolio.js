@@ -536,15 +536,26 @@ function initThemeToggle() {
 function initNavToggle() {
   const toggle = document.getElementById("nav-toggle");
   const links = document.getElementById("nav-links");
+  const overlay = document.getElementById("nav-overlay");
   if (!toggle || !links) return;
+
+  const close = () => {
+    toggle.classList.remove("open");
+    links.classList.remove("open");
+    overlay?.classList.remove("open");
+    document.body.style.overflow = "";
+  };
+
   toggle.addEventListener("click", () => {
-    toggle.classList.toggle("open");
-    links.classList.toggle("open");
+    const isOpen = links.classList.toggle("open");
+    toggle.classList.toggle("open", isOpen);
+    overlay?.classList.toggle("open", isOpen);
+    document.body.style.overflow = isOpen ? "hidden" : "";
   });
+
+  overlay?.addEventListener("click", close);
+
   links.querySelectorAll(".navbar__link").forEach((link) => {
-    link.addEventListener("click", () => {
-      toggle.classList.remove("open");
-      links.classList.remove("open");
-    });
+    link.addEventListener("click", close);
   });
 }

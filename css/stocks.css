@@ -1,0 +1,429 @@
+/* ============================================
+   MicroVest — Stocks Page (stocks.css)
+   Grid, Cards, Range Bar, Filter Bar, Animations
+   ============================================ */
+
+/* ── Stocks Hero ── */
+.stocks-hero {
+  text-align: center;
+  padding-bottom: var(--space-6);
+}
+
+.stocks-hero .section-header__subtitle {
+  margin: 0 auto;
+}
+
+/* ── Filter Bar ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  padding: var(--space-4) var(--space-5);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+}
+
+.filter-bar__filters {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.filter-btn--active {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.filter-bar__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-wrapper__icon {
+  position: absolute;
+  left: var(--space-3);
+  font-size: var(--text-sm);
+  pointer-events: none;
+}
+
+.search-wrapper__input {
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-8);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  width: 180px;
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.search-wrapper__input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  width: 220px;
+}
+
+.search-wrapper__input::placeholder {
+  color: var(--text-muted);
+}
+
+.sort-select {
+  padding: var(--space-2) var(--space-4);
+  padding-right: var(--space-8);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color var(--transition-fast);
+}
+
+.sort-select:focus {
+  border-color: var(--accent-primary);
+}
+
+.sort-select option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* ── Stock Grid ── */
+.stocks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+/* ── Stock Card ── */
+.stock-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--transition-base);
+  animation: card-enter 0.4s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.05s);
+}
+
+.stock-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow:
+    0 -10px 40px rgba(34, 211, 238, 0.15),
+    0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.stock-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-5) 0;
+}
+
+.stock-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stock-card__ticker {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.stock-card__name {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stock-card__tags {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.stock-card__body {
+  padding: var(--space-4) var(--space-5);
+}
+
+.stock-card__price-section {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.stock-card__price {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+}
+
+.stock-card__change {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.stock-card__change--up {
+  color: var(--color-gain);
+  background: var(--color-gain-bg);
+}
+
+.stock-card__change--down {
+  color: var(--color-loss);
+  background: var(--color-loss-bg);
+}
+
+/* Price flash animations (Pass 3.4) */
+@keyframes border-flash-green {
+  0% {
+    border-color: var(--glass-border);
+    box-shadow: none;
+  }
+  25% {
+    border-color: #22c55e;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+  }
+  100% {
+    border-color: var(--glass-border);
+    box-shadow: none;
+  }
+}
+
+@keyframes border-flash-red {
+  0% {
+    border-color: var(--glass-border);
+    box-shadow: none;
+  }
+  25% {
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+  }
+  100% {
+    border-color: var(--glass-border);
+    box-shadow: none;
+  }
+}
+
+.stock-card.price-up {
+  animation: border-flash-green 0.8s ease-out;
+}
+.stock-card.price-down {
+  animation: border-flash-red 0.8s ease-out;
+}
+
+/* ── Sparklines (Pass 5) ── */
+.sparkline-container {
+  height: 48px;
+  width: 100%;
+  margin-bottom: var(--space-4);
+  opacity: 0.8;
+  position: relative;
+}
+
+.sparkline {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.sparkline-line {
+  fill: none;
+  stroke: var(--color-gain);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s ease;
+}
+
+.stock-card.trending-down .sparkline-line {
+  stroke: var(--color-loss);
+}
+
+/* ── 52-Week Range Bar ── */
+.range-bar {
+  margin-bottom: var(--space-3);
+}
+
+.range-bar__label {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.range-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  overflow: visible;
+}
+
+.range-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+  );
+  border-radius: var(--radius-full);
+  transition: width var(--transition-base);
+}
+
+.range-thumb {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border: 2px solid var(--accent-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: left var(--transition-base);
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+/* ── Stock Card Footer / Actions ── */
+.stock-card__footer {
+  padding: 0 var(--space-5) var(--space-5);
+}
+
+.stock-card__invest-btn {
+  width: 100%;
+  padding: var(--space-3);
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+  );
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.stock-card__invest-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.stock-card__invest-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Empty / No Results ── */
+.stocks-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-16) var(--space-4);
+  color: var(--text-muted);
+}
+
+.stocks-empty__icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-4);
+  opacity: 0.5;
+}
+
+.stocks-empty__text {
+  font-size: var(--text-lg);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .stocks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stocks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-bar__controls {
+    flex-direction: column;
+  }
+
+  .search-wrapper__input {
+    width: 100%;
+  }
+
+  .search-wrapper__input:focus {
+    width: 100%;
+  }
+
+  .sort-select {
+    width: 100%;
+  }
+}

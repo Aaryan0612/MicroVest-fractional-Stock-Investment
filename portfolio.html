@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MicroVest — My Portfolio</title>
+    <meta
+      name="description"
+      content="Track your fractional stock portfolio performance with real-time simulated prices on MicroVest."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/portfolio.css" />
+  </head>
+  <body class="page-portfolio">
+    <!-- Aurora Background -->
+    <div class="aurora-bg"><div class="aurora-blob"></div></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+      <a href="stocks.html" class="navbar__brand">
+        <span class="navbar__brand-icon">μ</span>
+        MicroVest
+      </a>
+      <button
+        class="navbar__hamburger"
+        id="nav-toggle"
+        aria-label="Toggle navigation"
+      >
+        <span></span><span></span><span></span>
+      </button>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="Toggle theme"
+        title="Switch theme"
+      >
+        <span class="theme-icon">🌙</span>
+      </button>
+      <ul class="navbar__links" id="nav-links">
+        <li>
+          <a href="stocks.html" class="navbar__link"
+            ><span class="navbar__link-icon">📈</span> Stocks</a
+          >
+        </li>
+        <li>
+          <a href="portfolio.html" class="navbar__link navbar__link--active"
+            ><span class="navbar__link-icon">💼</span> Portfolio</a
+          >
+        </li>
+        <li>
+          <a href="education.html" class="navbar__link"
+            ><span class="navbar__link-icon">📚</span> Learn</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <main class="main-content">
+      <!-- Header -->
+      <header class="section-header">
+        <h1 class="section-header__title">My Portfolio</h1>
+        <p class="section-header__subtitle">
+          Track your investments and watch them grow in real time.
+        </p>
+      </header>
+
+      <!-- Summary Cards -->
+      <section
+        class="summary-cards"
+        id="summary-cards"
+        aria-label="Portfolio summary"
+      >
+        <article class="summary-card summary-card--total">
+          <span class="summary-card__label">Total Value</span>
+          <span class="summary-card__value text-mono" id="total-value"
+            >$0.00</span
+          >
+        </article>
+        <article class="summary-card">
+          <span class="summary-card__label">Invested</span>
+          <span class="summary-card__value text-mono" id="total-invested"
+            >$0.00</span
+          >
+        </article>
+        <article class="summary-card">
+          <span class="summary-card__label">Total Gain/Loss</span>
+          <span class="summary-card__value text-mono" id="total-gainloss"
+            >$0.00</span
+          >
+        </article>
+        <article class="summary-card">
+          <span class="summary-card__label">Total Gain/Loss %</span>
+          <span class="summary-card__value text-mono" id="total-gainpct"
+            >0.00%</span
+          >
+        </article>
+      </section>
+
+      <!-- Value Trend Chart -->
+      <section class="value-trend-section" aria-label="Portfolio value trend">
+        <h2>Value Over Time</h2>
+        <div class="trend-chart-container">
+          <svg
+            class="trend-chart"
+            id="trend-chart"
+            viewBox="0 0 400 80"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="trend-gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(0, 212, 255, 0.3)" />
+                <stop offset="100%" stop-color="rgba(0, 212, 255, 0)" />
+              </linearGradient>
+            </defs>
+            <path class="trend-area" d="" fill="url(#trend-gradient)" />
+            <polyline class="trend-line" points="" />
+          </svg>
+          <div class="trend-labels">
+            <span class="trend-label-start" id="trend-start">--</span>
+            <span class="trend-label-end" id="trend-end">--</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Allocation Chart -->
+      <section
+        class="chart-section glass-card"
+        aria-label="Portfolio allocation chart"
+      >
+        <h2 class="chart-section__title">Portfolio Allocation</h2>
+        <div class="chart-bars" id="chart-bars">
+          <!-- Bars rendered by JS -->
+        </div>
+      </section>
+
+      <!-- Holdings Table -->
+      <section class="holdings-section glass-card" aria-label="Holdings table">
+        <h2 class="holdings-section__title">Holdings</h2>
+        <div class="table-wrapper">
+          <table class="holdings-table" id="holdings-table">
+            <thead>
+              <tr>
+                <th>Stock</th>
+                <th>Shares</th>
+                <th>Avg Buy</th>
+                <th>Current</th>
+                <th>Value</th>
+                <th>Gain/Loss</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="holdings-tbody">
+              <!-- Rows rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+        <p class="empty-state" id="empty-portfolio" hidden>
+          <span class="empty-state__icon">📭</span>
+          <span class="empty-state__text">Your portfolio is empty.</span>
+          <a
+            href="stocks.html"
+            class="btn btn-primary btn-sm"
+            style="margin-top: var(--space-4); display: inline-flex"
+          >
+            Start Investing →
+          </a>
+        </p>
+      </section>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        MicroVest &copy; 2026 — Simulated platform for educational purposes. Not
+        real financial advice.
+      </p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/simulator.js"></script>
+    <script src="js/portfolio.js"></script>
+  </body>
+</html>

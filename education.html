@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MicroVest — Learn Investing</title>
+    <meta
+      name="description"
+      content="Learn about fractional investing, risk management, and stock market basics with MicroVest's educational modules."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/education.css" />
+  </head>
+  <body class="page-education">
+    <!-- Aurora Background -->
+    <div class="aurora-bg"><div class="aurora-blob"></div></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+      <a href="stocks.html" class="navbar__brand">
+        <span class="navbar__brand-icon">μ</span>
+        MicroVest
+      </a>
+      <button
+        class="navbar__hamburger"
+        id="nav-toggle"
+        aria-label="Toggle navigation"
+      >
+        <span></span><span></span><span></span>
+      </button>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="Toggle theme"
+        title="Switch theme"
+      >
+        <span class="theme-icon">🌙</span>
+      </button>
+      <ul class="navbar__links" id="nav-links">
+        <li>
+          <a href="stocks.html" class="navbar__link"
+            ><span class="navbar__link-icon">📈</span> Stocks</a
+          >
+        </li>
+        <li>
+          <a href="portfolio.html" class="navbar__link"
+            ><span class="navbar__link-icon">💼</span> Portfolio</a
+          >
+        </li>
+        <li>
+          <a href="education.html" class="navbar__link navbar__link--active"
+            ><span class="navbar__link-icon">📚</span> Learn</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <main class="main-content">
+      <!-- Hero -->
+      <header class="section-header edu-hero">
+        <h1 class="section-header__title">Learn Investing</h1>
+        <p class="section-header__subtitle">
+          Master the fundamentals of fractional investing, risk management, and
+          how our simulator works.
+        </p>
+      </header>
+
+      <!-- Section 1: What is Fractional Investing? -->
+      <section class="edu-section" id="fractional-intro">
+        <h2 class="edu-section__title">What is Fractional Investing?</h2>
+        <p class="edu-section__desc">
+          Fractional investing lets you buy a portion of a stock instead of a
+          whole share. This makes investing accessible to everyone — you can
+          start with as little as ₹10.
+        </p>
+        <div class="edu-cards-grid">
+          <div class="edu-card glass-card">
+            <div class="edu-card__icon">💵</div>
+            <h3 class="edu-card__title">Low Entry Point</h3>
+            <p class="edu-card__text">
+              Invest any amount you're comfortable with. No need to buy a full
+              share of expensive stocks like BAJFINANCE at ₹7,210.
+            </p>
+          </div>
+          <div class="edu-card glass-card">
+            <div class="edu-card__icon">📊</div>
+            <h3 class="edu-card__title">Diversify Easily</h3>
+            <p class="edu-card__text">
+              Spread your money across multiple stocks instead of putting all
+              your eggs in one basket.
+            </p>
+          </div>
+          <div class="edu-card glass-card">
+            <div class="edu-card__icon">🎓</div>
+            <h3 class="edu-card__title">Learn by Doing</h3>
+            <p class="edu-card__text">
+              MicroVest simulates real market conditions so you can practice
+              investing without any real financial risk.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Understanding Risk -->
+      <section class="edu-section" id="risk-guide">
+        <h2 class="edu-section__title">Understanding Risk Levels</h2>
+        <p class="edu-section__desc">
+          Every stock carries a risk level. Understanding risk is crucial to
+          building a balanced portfolio.
+        </p>
+        <div class="risk-guide-grid">
+          <div class="risk-card glass-card">
+            <span class="badge badge--low">Low Risk</span>
+            <h3 class="risk-card__title">Stable & Reliable</h3>
+            <p class="risk-card__text">
+              Large, established companies with steady revenue. Lower potential
+              returns but more reliable. Examples: AAPL, MSFT, BRK.B
+            </p>
+            <div class="risk-card__volatility">
+              <span>Volatility:</span>
+              <div class="risk-card__bar">
+                <div
+                  class="risk-card__bar-fill risk-card__bar-fill--low"
+                  style="width: 25%"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="risk-card glass-card">
+            <span class="badge badge--medium">Medium Risk</span>
+            <h3 class="risk-card__title">Growth Potential</h3>
+            <p class="risk-card__text">
+              Growing companies with solid fundamentals. Moderate price swings
+              with decent growth potential. Examples: JPM, AMZN, GOOGL, META
+            </p>
+            <div class="risk-card__volatility">
+              <span>Volatility:</span>
+              <div class="risk-card__bar">
+                <div
+                  class="risk-card__bar-fill risk-card__bar-fill--medium"
+                  style="width: 55%"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="risk-card glass-card">
+            <span class="badge badge--high">High Risk</span>
+            <h3 class="risk-card__title">High Reward</h3>
+            <p class="risk-card__text">
+              Volatile stocks with significant price swings. Higher potential
+              returns but also higher potential losses. Examples: NFLX, TSLA,
+              NVDA
+            </p>
+            <div class="risk-card__volatility">
+              <span>Volatility:</span>
+              <div class="risk-card__bar">
+                <div
+                  class="risk-card__bar-fill risk-card__bar-fill--high"
+                  style="width: 90%"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Reading a Stock Card -->
+      <section class="edu-section" id="stock-card-guide">
+        <h2 class="edu-section__title">Reading a Stock Card</h2>
+        <p class="edu-section__desc">
+          Here's what each element of a MicroVest stock card means:
+        </p>
+        <div class="card-diagram glass-card">
+          <div class="card-diagram__item">
+            <span class="card-diagram__label">Ticker Symbol</span>
+            <span class="card-diagram__desc"
+              >The unique abbreviation for a stock (e.g., AAPL for Apple)</span
+            >
+          </div>
+          <div class="card-diagram__item">
+            <span class="card-diagram__label">Current Price</span>
+            <span class="card-diagram__desc"
+              >The latest simulated price — updates every 2 seconds</span
+            >
+          </div>
+          <div class="card-diagram__item">
+            <span class="card-diagram__label">Change %</span>
+            <span class="card-diagram__desc"
+              >How much the price changed since the last tick. Green = up, Red =
+              down</span
+            >
+          </div>
+          <div class="card-diagram__item">
+            <span class="card-diagram__label">Risk Badge</span>
+            <span class="card-diagram__desc"
+              >Low / Medium / High — based on the stock's volatility</span
+            >
+          </div>
+          <div class="card-diagram__item">
+            <span class="card-diagram__label">52-Week Range</span>
+            <span class="card-diagram__desc"
+              >The lowest and highest price the stock has traded at in the past
+              year</span
+            >
+          </div>
+          <div class="card-diagram__item">
+            <span class="card-diagram__label">Invest Button</span>
+            <span class="card-diagram__desc"
+              >Opens the calculator to buy fractional shares of the stock</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Glossary Accordion -->
+      <section class="edu-section" id="glossary">
+        <h2 class="edu-section__title">Investing Glossary</h2>
+        <p class="edu-section__desc">
+          Key terms every beginner investor should know.
+        </p>
+        <div class="glossary-accordion" id="glossary-accordion">
+          <!-- 15 terms rendered by JS -->
+        </div>
+      </section>
+
+      <!-- Section 5: Quiz -->
+      <section class="edu-section" id="quiz-section">
+        <h2 class="edu-section__title">Test Your Knowledge</h2>
+        <p class="edu-section__desc">
+          Take a quick 5-question quiz to see how much you've learned!
+        </p>
+        <div class="quiz-container glass-card" id="quiz-container">
+          <div class="quiz-progress" id="quiz-progress">
+            <span id="quiz-progress-text">Question 1 of 5</span>
+            <div class="quiz-progress__bar">
+              <div
+                class="quiz-progress__fill"
+                id="quiz-progress-fill"
+                style="width: 20%"
+              ></div>
+            </div>
+          </div>
+          <div id="quiz-question-area">
+            <!-- Question rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: How the Simulator Works -->
+      <section class="edu-section" id="simulator-explainer">
+        <h2 class="edu-section__title">How Our Simulator Works</h2>
+        <p class="edu-section__desc">
+          MicroVest uses a simplified Geometric Brownian Motion model to
+          simulate realistic stock price movements.
+        </p>
+        <div class="sim-explainer glass-card">
+          <div class="sim-explainer__step">
+            <div class="sim-explainer__number">1</div>
+            <div>
+              <h3 class="sim-explainer__title">Base Prices</h3>
+              <p class="sim-explainer__text">
+                Each stock starts with a realistic base price drawn from recent
+                market data.
+              </p>
+            </div>
+          </div>
+          <div class="sim-explainer__step">
+            <div class="sim-explainer__number">2</div>
+            <div>
+              <h3 class="sim-explainer__title">Random Walks</h3>
+              <p class="sim-explainer__text">
+                Every 2 seconds, prices change based on each stock's volatility
+                parameter, creating realistic-looking movements.
+              </p>
+            </div>
+          </div>
+          <div class="sim-explainer__step">
+            <div class="sim-explainer__number">3</div>
+            <div>
+              <h3 class="sim-explainer__title">Volatility Controls Risk</h3>
+              <p class="sim-explainer__text">
+                Low-risk stocks (volatility: 0.005–0.008) move gently. High-risk
+                stocks (0.018–0.025) swing dramatically.
+              </p>
+            </div>
+          </div>
+          <div class="sim-explainer__step">
+            <div class="sim-explainer__number">4</div>
+            <div>
+              <h3 class="sim-explainer__title">Portfolio Impact</h3>
+              <p class="sim-explainer__text">
+                Your portfolio's value updates in real-time as prices change,
+                showing realistic gains and losses.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        MicroVest &copy; 2026 — Simulated platform for educational purposes. Not
+        real financial advice.
+      </p>
+    </footer>
+
+    <script src="js/education.js"></script>
+  </body>
+</html>

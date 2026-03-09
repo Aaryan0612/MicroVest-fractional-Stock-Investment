@@ -1,0 +1,111 @@
+/* ============================================
+   MicroVest — Stock Data (data.js)
+   10 Indian stocks, INR prices
+   ============================================ */
+
+const STOCKS = [
+  {
+    ticker: "RELIANCE",
+    name: "Reliance Industries",
+    sector: "Energy & Retail",
+    basePrice: 2850.0,
+    price52wLow: 2220.3,
+    price52wHigh: 3217.9,
+    risk: "low",
+    volatility: 0.006,
+  },
+  {
+    ticker: "TCS",
+    name: "Tata Consultancy Services",
+    sector: "Technology",
+    basePrice: 3940.0,
+    price52wLow: 3311.0,
+    price52wHigh: 4592.25,
+    risk: "low",
+    volatility: 0.007,
+  },
+  {
+    ticker: "HDFCBANK",
+    name: "HDFC Bank Ltd",
+    sector: "Banking",
+    basePrice: 1672.0,
+    price52wLow: 1430.15,
+    price52wHigh: 1880.0,
+    risk: "low",
+    volatility: 0.005,
+  },
+  {
+    ticker: "INFY",
+    name: "Infosys Ltd",
+    sector: "Technology",
+    basePrice: 1555.0,
+    price52wLow: 1285.0,
+    price52wHigh: 1903.5,
+    risk: "medium",
+    volatility: 0.01,
+  },
+  {
+    ticker: "ICICIBANK",
+    name: "ICICI Bank Ltd",
+    sector: "Banking",
+    basePrice: 1198.0,
+    price52wLow: 970.05,
+    price52wHigh: 1362.35,
+    risk: "medium",
+    volatility: 0.011,
+  },
+  {
+    ticker: "WIPRO",
+    name: "Wipro Ltd",
+    sector: "Technology",
+    basePrice: 462.0,
+    price52wLow: 370.2,
+    price52wHigh: 570.5,
+    risk: "medium",
+    volatility: 0.012,
+  },
+  {
+    ticker: "BAJFINANCE",
+    name: "Bajaj Finance Ltd",
+    sector: "Finance",
+    basePrice: 7210.0,
+    price52wLow: 6187.8,
+    price52wHigh: 8192.0,
+    risk: "medium",
+    volatility: 0.013,
+  },
+  {
+    ticker: "TATAMOTORS",
+    name: "Tata Motors Ltd",
+    sector: "Automotive",
+    basePrice: 780.0,
+    price52wLow: 604.0,
+    price52wHigh: 1179.05,
+    risk: "high",
+    volatility: 0.02,
+  },
+  {
+    ticker: "ADANIENT",
+    name: "Adani Enterprises",
+    sector: "Conglomerate",
+    basePrice: 2340.0,
+    price52wLow: 1701.05,
+    price52wHigh: 3743.9,
+    risk: "high",
+    volatility: 0.024,
+  },
+  {
+    ticker: "ZOMATO",
+    name: "Zomato Ltd",
+    sector: "Food Tech",
+    basePrice: 224.0,
+    price52wLow: 140.0,
+    price52wHigh: 304.5,
+    risk: "high",
+    volatility: 0.022,
+  },
+];
+
+const FEE_RATE = 0.005; // 0.5% platform fee
+const SIM_INTERVAL_MS = 2000; // 2s interval
+const CURRENCY_SYMBOL = "₹"; // Used everywhere instead of $

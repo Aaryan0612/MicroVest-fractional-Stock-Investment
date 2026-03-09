@@ -1,0 +1,383 @@
+/* ============================================
+   MicroVest — Education Page (education.css)
+   Sections, Cards, Accordion, Quiz, Sim Explainer
+   ============================================ */
+
+/* ── Education Hero ── */
+.edu-hero {
+  text-align: center;
+  padding-bottom: var(--space-4);
+}
+
+.edu-hero .section-header__subtitle {
+  margin: 0 auto;
+}
+
+/* ── Section Spacing ── */
+.edu-section {
+  margin-bottom: var(--space-16);
+}
+
+.edu-section__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.edu-section__desc {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  max-width: 700px;
+  margin-bottom: var(--space-6);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Intro Cards Grid ── */
+.edu-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.edu-card {
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+}
+
+.edu-card__icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-4);
+}
+
+.edu-card__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.edu-card__text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Risk Guide ── */
+.risk-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.risk-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.risk-card__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.risk-card__text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  flex: 1;
+}
+
+.risk-card__volatility {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+}
+
+.risk-card__bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.risk-card__bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+.risk-card__bar-fill--low {
+  background: var(--risk-low);
+}
+.risk-card__bar-fill--medium {
+  background: var(--risk-medium);
+}
+.risk-card__bar-fill--high {
+  background: var(--risk-high);
+}
+
+/* ── Card Diagram ── */
+.card-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.card-diagram__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.card-diagram__item:last-child {
+  border-bottom: none;
+}
+
+.card-diagram__label {
+  min-width: 140px;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--accent-primary);
+}
+
+.card-diagram__desc {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Glossary Accordion ── */
+.glossary-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* ── Quiz ── */
+.quiz-container {
+  max-width: 640px;
+}
+
+.quiz-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+#quiz-progress-text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-medium);
+}
+
+.quiz-progress__bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.quiz-progress__fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+  );
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+.quiz-question {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-5);
+  line-height: var(--leading-normal);
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.quiz-option {
+  display: block;
+  width: 100%;
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.quiz-option:hover:not(.correct):not(.incorrect):not(:disabled) {
+  border-color: var(--accent-primary);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.quiz-option.correct {
+  border-color: var(--color-gain);
+  background: var(--color-gain-bg);
+  color: var(--color-gain);
+  cursor: default;
+}
+
+.quiz-option.incorrect {
+  border-color: var(--color-loss);
+  background: var(--color-loss-bg);
+  color: var(--color-loss);
+  cursor: default;
+}
+
+.quiz-option:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.quiz-feedback {
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+  line-height: var(--leading-relaxed);
+}
+
+.quiz-feedback--correct {
+  background: var(--color-gain-bg);
+  color: var(--color-gain);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.quiz-feedback--incorrect {
+  background: var(--color-loss-bg);
+  color: var(--color-loss);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.quiz-next-btn {
+  margin-top: var(--space-2);
+}
+
+/* ── Quiz Score Screen ── */
+.quiz-score {
+  text-align: center;
+  padding: var(--space-8) 0;
+}
+
+.quiz-score__icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-4);
+}
+
+.quiz-score__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.quiz-score__text {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.quiz-score__value {
+  font-family: var(--font-mono);
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-6);
+}
+
+/* ── Simulator Explainer ── */
+.sim-explainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.sim-explainer__step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+
+.sim-explainer__number {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+  );
+  border-radius: var(--radius-full);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: white;
+}
+
+.sim-explainer__title {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.sim-explainer__text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .edu-cards-grid,
+  .risk-guide-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .edu-cards-grid,
+  .risk-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-diagram__item {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .card-diagram__label {
+    min-width: unset;
+  }
+}

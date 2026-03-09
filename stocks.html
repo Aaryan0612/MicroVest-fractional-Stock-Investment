@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MicroVest — Explore Stocks</title>
+    <meta
+      name="description"
+      content="Browse and invest in fractional shares of top stocks with MicroVest's simulated trading platform."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/stocks.css" />
+  </head>
+  <body class="page-stocks">
+    <!-- Aurora Background -->
+    <div class="aurora-bg"><div class="aurora-blob"></div></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+      <a href="stocks.html" class="navbar__brand">
+        <span class="navbar__brand-icon">μ</span>
+        MicroVest
+      </a>
+      <button
+        class="navbar__hamburger"
+        id="nav-toggle"
+        aria-label="Toggle navigation"
+      >
+        <span></span><span></span><span></span>
+      </button>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="Toggle theme"
+        title="Switch theme"
+      >
+        <span class="theme-icon">🌙</span>
+      </button>
+      <ul class="navbar__links" id="nav-links">
+        <li>
+          <a href="stocks.html" class="navbar__link navbar__link--active"
+            ><span class="navbar__link-icon">📈</span> Stocks</a
+          >
+        </li>
+        <li>
+          <a href="portfolio.html" class="navbar__link"
+            ><span class="navbar__link-icon">💼</span> Portfolio</a
+          >
+        </li>
+        <li>
+          <a href="education.html" class="navbar__link"
+            ><span class="navbar__link-icon">📚</span> Learn</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <main class="main-content">
+      <!-- Hero -->
+      <header class="section-header stocks-hero">
+        <h1 class="section-header__title">Explore Stocks</h1>
+        <p class="section-header__subtitle">
+          Discover top companies and start investing with fractional shares — as
+          little as ₹10.
+        </p>
+        <div class="live-indicator" style="margin-top: var(--space-3)">
+          <span class="live-indicator__dot"></span>
+          <span>Live simulation active — prices update every 2s</span>
+        </div>
+      </header>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar" id="filter-bar">
+        <div class="filter-bar__filters">
+          <button class="filter-btn filter-btn--active" data-filter="all">
+            All
+          </button>
+          <button class="filter-btn" data-filter="low">Low Risk</button>
+          <button class="filter-btn" data-filter="medium">Medium Risk</button>
+          <button class="filter-btn" data-filter="high">High Risk</button>
+        </div>
+        <div class="filter-bar__controls">
+          <div class="search-wrapper">
+            <span class="search-wrapper__icon">🔍</span>
+            <input
+              type="text"
+              id="stock-search"
+              class="search-wrapper__input"
+              placeholder="Search stocks..."
+              aria-label="Search stocks"
+            />
+          </div>
+          <select id="stock-sort" class="sort-select" aria-label="Sort stocks">
+            <option value="default">Default</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="price-desc">Price High → Low</option>
+            <option value="price-asc">Price Low → High</option>
+            <option value="change-desc">Top Gainers</option>
+            <option value="change-asc">Top Losers</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Stock Grid -->
+      <section class="stocks-grid" id="stocks-grid" aria-label="Stock cards">
+        <!-- Cards rendered by JS -->
+      </section>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        MicroVest &copy; 2026 — Simulated platform for educational purposes. Not
+        real financial advice.
+      </p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/simulator.js"></script>
+    <script src="js/stocks.js"></script>
+  </body>
+</html>

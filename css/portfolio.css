@@ -100,8 +100,8 @@
 
 .trend-chart {
   width: 100%;
-  height: 120px;
-  overflow: visible;
+  height: 100%;
+  display: block;
 }
 
 .trend-line {
@@ -230,7 +230,9 @@
 }
 
 .holdings-table tbody tr {
-  transition: background var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-base);
 }
 
 .holdings-table tbody tr:nth-child(even) {
@@ -238,7 +240,8 @@
 }
 
 .holdings-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(4px);
 }
 
 .holdings-table td {

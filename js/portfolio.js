@@ -6,6 +6,7 @@
 
 let sim;
 const portfolioValueHistory = []; // Pass 5: track value over time
+let trendChartInstance = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
@@ -73,20 +74,78 @@ function renderSummaryCards(totals) {
   const gainPctEl = document.getElementById("total-gainpct");
 
   if (totalValueEl)
-    totalValueEl.textContent = `₹${totals.totalValue.toFixed(2)}`;
-  if (investedEl) investedEl.textContent = `₹${totals.invested.toFixed(2)}`;
+    animateValue(
+      totalValueEl,
+      getCurrentValue(totalValueEl),
+      totals.totalValue,
+      800,
+      "$",
+    );
+  if (investedEl)
+    animateValue(
+      investedEl,
+      getCurrentValue(investedEl),
+      totals.invested,
+      800,
+      "$",
+    );
 
   if (gainLossEl) {
     const sign = totals.gainLoss >= 0 ? "+" : "";
-    gainLossEl.textContent = `${sign}₹${Math.abs(totals.gainLoss).toFixed(2)}`;
+    animateValue(
+      gainLossEl,
+      getCurrentValue(gainLossEl),
+      Math.abs(totals.gainLoss),
+      800,
+      sign + "$",
+    );
     gainLossEl.className = `summary-card__value text-mono ${totals.gainLoss >= 0 ? "text-gain" : "text-loss"}`;
   }
 
   if (gainPctEl) {
     const sign = totals.gainPct >= 0 ? "+" : "";
-    gainPctEl.textContent = `${sign}${totals.gainPct.toFixed(2)}%`;
+    animateValue(
+      gainPctEl,
+      getCurrentValue(gainPctEl, "%"),
+      totals.gainPct,
+      800,
+      sign,
+      "%",
+    );
     gainPctEl.className = `summary-card__value text-mono ${totals.gainPct >= 0 ? "text-gain" : "text-loss"}`;
   }
+}
+
+function getCurrentValue(el, ignoreSuffix = "") {
+  if (!el) return 0;
+  const text = el.textContent
+    .replace("$", "")
+    .replace("+", "")
+    .replace(ignoreSuffix, "");
+  const val = parseFloat(text);
+  return isNaN(val) ? 0 : val;
+}
+
+// ── Number Animation (Tweening) ──
+function animateValue(obj, start, end, duration, prefix = "", suffix = "") {
+  if (start === end) {
+    obj.textContent = `${prefix}${end.toFixed(2)}${suffix}`;
+    return;
+  }
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    const Math_progress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+    const current = start + (end - start) * Math_progress;
+    obj.textContent = `${prefix}${current.toFixed(2)}${suffix}`;
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    } else {
+      obj.textContent = `${prefix}${end.toFixed(2)}${suffix}`;
+    }
+  };
+  window.requestAnimationFrame(step);
 }
 
 function renderChart(holdings, prices) {
@@ -184,37 +243,81 @@ function recordValueSnapshot(totalValue) {
 }
 
 function updateTrendChart() {
-  const line = document.querySelector(".trend-line");
-  const area = document.querySelector(".trend-area");
+  const canvas = document.getElementById("portfolio-trend-chart");
   const startEl = document.getElementById("trend-start");
   const endEl = document.getElementById("trend-end");
 
-  if (!line || portfolioValueHistory.length < 2) return;
+  if (!canvas || portfolioValueHistory.length < 2) return;
 
   const history = portfolioValueHistory;
-  const min = Math.min(...history);
-  const max = Math.max(...history);
-  const range = max - min || 1;
 
-  const points = history
-    .map((val, i) => {
-      const x = (i / (history.length - 1)) * 400;
-      const y = 80 - ((val - min) / range) * 72 + 4;
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    })
-    .join(" ");
+  if (trendChartInstance) {
+    trendChartInstance.data.labels = history.map((_, i) => i);
+    trendChartInstance.data.datasets[0].data = history;
+    trendChartInstance.update("none");
+  } else {
+    const ctx = canvas.getContext("2d");
 
-  line.setAttribute("points", points);
+    // Create gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 80);
+    gradient.addColorStop(0, "rgba(0, 212, 255, 0.4)");
+    gradient.addColorStop(1, "rgba(0, 212, 255, 0)");
 
-  // Area fill path
-  const lastX = ((history.length - 1) / (history.length - 1)) * 400;
-  area.setAttribute(
-    "d",
-    `M0,80 L${points.split(" ").join(" L")} L${lastX},80 Z`,
-  );
+    trendChartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: history.map((_, i) => i),
+        datasets: [
+          {
+            data: history,
+            borderColor: "#00d4ff",
+            backgroundColor: gradient,
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            fill: true,
+            tension: 0.4,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 0 },
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return "₹" + context.parsed.y.toFixed(2);
+              },
+            },
+          },
+        },
+        scales: {
+          x: { display: false },
+          y: {
+            display: false,
+            min: Math.min(...history) * 0.95,
+            max: Math.max(...history) * 1.05,
+          },
+        },
+        layout: { padding: 0 },
+      },
+    });
+  }
 
-  if (startEl) startEl.textContent = `₹${history[0].toFixed(2)}`;
-  if (endEl) endEl.textContent = `₹${history[history.length - 1].toFixed(2)}`;
+  if (startEl)
+    animateValue(startEl, getCurrentValue(startEl), history[0], 800, "₹");
+  if (endEl)
+    animateValue(
+      endEl,
+      getCurrentValue(endEl),
+      history[history.length - 1],
+      800,
+      "₹",
+    );
 }
 
 function removeHolding(ticker) {

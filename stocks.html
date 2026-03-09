@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/stocks.css" />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body class="page-stocks">
     <!-- Aurora Background -->
@@ -125,6 +127,147 @@
         real financial advice.
       </p>
     </footer>
+
+    <!-- Apple-Style 3D Modal Overlay -->
+    <div
+      class="modal-overlay"
+      id="stock-modal"
+      aria-hidden="true"
+      role="dialog"
+    >
+      <div class="modal-backdrop" onclick="closeModal()"></div>
+      <div class="modal-container">
+        <button
+          class="modal-close-btn"
+          onclick="closeModal()"
+          aria-label="Close modal"
+        >
+          ✕
+        </button>
+        <div class="modal-flip-inner" id="modal-flipper">
+          <!-- Front side: Big Chart + Stats -->
+          <div class="modal-face modal-front">
+            <div class="modal-head">
+              <div class="modal-head-titles">
+                <h2 id="modal-ticker" class="modal-ticker">--</h2>
+                <p id="modal-name" class="modal-name">--</p>
+              </div>
+              <div class="modal-head-price">
+                <h3 id="modal-price" class="modal-price">₹0.00</h3>
+                <span id="modal-change" class="modal-change badge">+0.00%</span>
+              </div>
+            </div>
+
+            <div
+              class="modal-chart-stage"
+              style="
+                position: relative;
+                height: 180px;
+                width: 100%;
+                margin: var(--space-4) 0;
+              "
+            >
+              <canvas id="modal-main-chart"></canvas>
+            </div>
+
+            <div class="modal-stats-grid">
+              <div class="stat-box">
+                <span class="stat-label">52W High</span>
+                <span class="stat-val" id="modal-high">--</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">52W Low</span>
+                <span class="stat-val" id="modal-low">--</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Risk Level</span>
+                <span class="badge" id="modal-risk">--</span>
+              </div>
+            </div>
+
+            <button class="modal-primary-btn" onclick="flipModalToCalc()">
+              💰 Buy Fractional Shares
+            </button>
+          </div>
+
+          <!-- Back side: The Calculator -->
+          <div class="modal-face modal-back calculator-panel">
+            <div class="modal-head">
+              <button class="modal-back-btn" onclick="flipModalToChart()">
+                ← Back to Details
+              </button>
+              <h3 class="modal-ticker">
+                Invest in <span id="calc-ticker-display">--</span>
+              </h3>
+            </div>
+
+            <div class="calculator-panel__inner">
+              <div class="calculator-panel__input-group">
+                <label class="calculator-panel__label" for="modal-invest-amount"
+                  >Investment Amount (₹)</label
+                >
+                <input
+                  type="number"
+                  id="modal-invest-amount"
+                  class="calculator-panel__input"
+                  placeholder="Enter amount (e.g. 500)"
+                  min="10"
+                  max="1000000"
+                  step="0.01"
+                  oninput="updateCalcPreviewModal()"
+                />
+                <div class="calculator-panel__quick-actions">
+                  <button class="chip-btn" onclick="addInvestmentModal(100)">
+                    +₹100
+                  </button>
+                  <button class="chip-btn" onclick="addInvestmentModal(500)">
+                    +₹500
+                  </button>
+                  <button class="chip-btn" onclick="addInvestmentModal(1000)">
+                    +₹1K
+                  </button>
+                  <button
+                    class="chip-btn round-up-btn"
+                    onclick="roundUpInvestmentModal()"
+                    title="Round up to next ₹100"
+                  >
+                    ⬆️ Round Up
+                  </button>
+                </div>
+              </div>
+
+              <div class="calculator-panel__result" id="modal-calc-result">
+                <div class="calculator-panel__result-row">
+                  <span>Shares you'll get:</span>
+                  <span id="modal-calc-shares">0.0000</span>
+                </div>
+                <div class="calculator-panel__result-row">
+                  <span>Platform fee (0.5%):</span>
+                  <span id="modal-calc-fee">₹0.00</span>
+                </div>
+                <div class="calculator-panel__result-row">
+                  <span style="color: var(--text-primary); font-weight: 600"
+                    >Total cost:</span
+                  >
+                  <span
+                    id="modal-calc-total"
+                    style="color: var(--text-primary); font-weight: 600"
+                    >₹0.00</span
+                  >
+                </div>
+              </div>
+
+              <button
+                class="modal-primary-btn confirm-btn"
+                onclick="confirmPurchaseModal()"
+              >
+                ✅ Confirm Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="js/data.js"></script>
     <script src="js/simulator.js"></script>

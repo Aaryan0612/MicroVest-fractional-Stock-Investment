@@ -8,6 +8,7 @@ let currentFilter = "all";
 let currentSort = "default";
 let searchQuery = "";
 let sim; // module-scope (Fix B pattern, needed for sparklines)
+const sparklineCharts = {}; // Store Chart.js instances
 
 const priceState = new Map(
   STOCKS.map((s) => [s.ticker, { price: s.basePrice, changePct: 0 }]),
@@ -57,7 +58,7 @@ function renderStocks(stocks) {
       const clampedPct = Math.min(Math.max(rangePct, 0), 100);
 
       return `
-        <article class="stock-card" data-ticker="${stock.ticker}" style="--card-index: ${index}">
+        <article class="stock-card" data-ticker="${stock.ticker}" style="--card-index: ${index}" onclick="openModal('${stock.ticker}')">
           <div class="stock-card__header">
             <div class="stock-card__info">
               <span class="stock-card__ticker">${stock.ticker}</span>
@@ -70,67 +71,11 @@ function renderStocks(stocks) {
           </div>
           <div class="stock-card__body">
             <div class="stock-card__price-section">
-              <span class="stock-card__price price-value">₹${price.toFixed(2)}</span>
-              <span class="stock-card__change ${changeClass} change-value">${changeSign}${changePct.toFixed(2)}%</span>
+              <span class="stock-card__price price-value" id="price-${stock.ticker}">₹${price.toFixed(2)}</span>
+              <span class="stock-card__change ${changeClass} change-value" id="change-${stock.ticker}">${changeSign}${changePct.toFixed(2)}%</span>
             </div>
             <div class="sparkline-container">
-              <svg class="sparkline" viewBox="0 0 100 30" preserveAspectRatio="none">
-                <polyline class="sparkline-line" points="" />
-              </svg>
-            </div>
-            <div class="range-bar">
-              <div class="range-bar__label">
-                <span>52W Low: ₹${stock.price52wLow.toFixed(2)}</span>
-                <span>52W High: ₹${stock.price52wHigh.toFixed(2)}</span>
-              </div>
-              <div class="range-track">
-                <div class="range-fill" style="width: ${clampedPct}%"></div>
-                <div class="range-thumb" style="left: ${clampedPct}%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="stock-card__footer">
-            <button class="stock-card__invest-btn" onclick="openCalculator('${stock.ticker}')">
-              💰 Invest Now
-            </button>
-          </div>
-          <div class="calculator-panel" data-calc="${stock.ticker}">
-            <div class="calculator-panel__inner">
-              <div class="calculator-panel__input-group">
-                <label class="calculator-panel__label" for="amount-${stock.ticker}">Investment Amount (₹)</label>
-                <input
-                  type="number"
-                  id="amount-${stock.ticker}"
-                  class="calculator-panel__input"
-                  placeholder="Enter amount (e.g. 500)"
-                  min="10"
-                  max="1000000"
-                  step="0.01"
-                  oninput="updateCalcPreview('${stock.ticker}')"
-                />
-              </div>
-              <div class="calculator-panel__result" id="calc-result-${stock.ticker}">
-                <div class="calculator-panel__result-row">
-                  <span>Shares you'll get:</span>
-                  <span id="calc-shares-${stock.ticker}">0.0000</span>
-                </div>
-                <div class="calculator-panel__result-row">
-                  <span>Platform fee (0.5%):</span>
-                  <span id="calc-fee-${stock.ticker}">₹0.00</span>
-                </div>
-                <div class="calculator-panel__result-row">
-                  <span>Total cost:</span>
-                  <span id="calc-total-${stock.ticker}">₹0.00</span>
-                </div>
-              </div>
-              <div class="calculator-panel__actions">
-                <button class="btn btn-primary btn-sm" onclick="confirmPurchase('${stock.ticker}')">
-                  ✅ Confirm Purchase
-                </button>
-                <button class="btn btn-ghost btn-sm" onclick="closeCalculator('${stock.ticker}')">
-                  Cancel
-                </button>
-              </div>
+              <canvas class="sparkline-canvas" id="sparkline-${stock.ticker}"></canvas>
             </div>
           </div>
         </article>
@@ -154,13 +99,20 @@ function onPriceUpdate(ticker, price, pct) {
   const card = document.querySelector(`[data-ticker="${ticker}"]`);
   if (!card) return;
 
-  const priceEl = card.querySelector(".price-value");
-  const changeEl = card.querySelector(".change-value");
+  const priceEl = document.getElementById(`price-${ticker}`);
+  const changeEl = document.getElementById(`change-${ticker}`);
 
-  if (priceEl) priceEl.textContent = `₹${price.toFixed(2)}`;
+  if (priceEl) {
+    const startValue = parseFloat(priceEl.textContent.replace("₹", ""));
+    animateValue(priceEl, startValue, price, 800, "₹");
+  }
+
   if (changeEl) {
     const sign = pct >= 0 ? "+" : "";
-    changeEl.textContent = `${sign}${pct.toFixed(2)}%`;
+    const startPct = parseFloat(
+      changeEl.textContent.replace("%", "").replace("+", ""),
+    );
+    animateValue(changeEl, startPct, pct, 800, sign, "%");
     changeEl.className = `stock-card__change ${pct >= 0 ? "stock-card__change--up" : "stock-card__change--down"} change-value`;
   }
 
@@ -169,54 +121,87 @@ function onPriceUpdate(ticker, price, pct) {
   void card.offsetWidth;
   card.classList.add(pct >= 0 ? "price-up" : "price-down");
 
-  updateRangeBar(ticker, price);
   updateSparkline(ticker, sim.getPriceHistory(ticker));
+
+  // Update modal if it's currently open for this ticker
+  if (currentModalTicker === ticker) {
+    updateModalRealTime(ticker, price, pct, sim.getPriceHistory(ticker));
+  }
 }
 
-// ── 52W Range Bar ──
-function updateRangeBar(ticker, currentPrice) {
-  const stock = STOCKS.find((s) => s.ticker === ticker);
-  if (!stock) return;
-  const pct =
-    ((currentPrice - stock.price52wLow) /
-      (stock.price52wHigh - stock.price52wLow)) *
-    100;
-  const clamped = Math.min(Math.max(pct, 0), 100);
-
-  const thumb = document.querySelector(
-    `[data-ticker="${ticker}"] .range-thumb`,
-  );
-  const fill = document.querySelector(`[data-ticker="${ticker}"] .range-fill`);
-  if (thumb) thumb.style.left = `${clamped}%`;
-  if (fill) fill.style.width = `${clamped}%`;
-}
-
-// ── Sparkline (Pass 5) ──
+// ── Sparkline (Chart.js) ──
 function updateSparkline(ticker, history) {
-  const svg = document.querySelector(
-    `[data-ticker="${ticker}"] .sparkline-line`,
-  );
-  if (!svg || !history || history.length < 2) return;
+  const canvas = document.getElementById(`sparkline-${ticker}`);
+  if (!canvas || !history || history.length < 2) return;
 
-  const min = Math.min(...history);
-  const max = Math.max(...history);
-  const range = max - min || 1;
+  const isUp = history[history.length - 1] >= history[0];
+  const color = isUp ? "#22c55e" : "#ef4444";
+  const bgColor = isUp ? "rgba(34, 197, 94, 0.1)" : "rgba(239, 68, 68, 0.1)";
 
-  const points = history
-    .map((price, i) => {
-      const x = (i / (history.length - 1)) * 100;
-      const y = 30 - ((price - min) / range) * 26 + 2;
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    })
-    .join(" ");
-
-  svg.setAttribute("points", points);
+  if (sparklineCharts[ticker]) {
+    sparklineCharts[ticker].data.datasets[0].data = history;
+    sparklineCharts[ticker].data.datasets[0].borderColor = color;
+    sparklineCharts[ticker].data.datasets[0].backgroundColor = bgColor;
+    sparklineCharts[ticker].update("none"); // Update without full animation for smoothness
+  } else {
+    const ctx = canvas.getContext("2d");
+    sparklineCharts[ticker] = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: history.map((_, i) => i),
+        datasets: [
+          {
+            data: history,
+            borderColor: color,
+            backgroundColor: bgColor,
+            borderWidth: 2,
+            pointRadius: 0,
+            fill: true,
+            tension: 0.4, // Smooth curves
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 0 },
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: {
+          x: { display: false },
+          y: {
+            display: false,
+            min: Math.min(...history) * 0.99,
+            max: Math.max(...history) * 1.01,
+          },
+        },
+        layout: { padding: 0 },
+      },
+    });
+  }
 
   const card = document.querySelector(`[data-ticker="${ticker}"]`);
   if (card) {
-    const trending = history[history.length - 1] >= history[0] ? "up" : "down";
-    card.classList.toggle("trending-down", trending === "down");
+    card.classList.toggle("trending-down", !isUp);
   }
+}
+
+// ── Number Animation (Tweening) ──
+function animateValue(obj, start, end, duration, prefix = "", suffix = "") {
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    // Ease out cubic
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    const current = start + (end - start) * easeProgress;
+    obj.textContent = `${prefix}${current.toFixed(2)}${suffix}`;
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    } else {
+      obj.textContent = `${prefix}${end.toFixed(2)}${suffix}`;
+    }
+  };
+  window.requestAnimationFrame(step);
 }
 
 // ── Filtering & Sorting ──
@@ -305,70 +290,221 @@ function initSearch() {
   });
 }
 
-// ── Calculator ──
-function openCalculator(ticker) {
-  document.querySelectorAll(".calculator-panel.open").forEach((panel) => {
-    panel.style.maxHeight = "0";
-    panel.classList.remove("open");
-  });
+// ── Apple-Style 3D Modal ──
+let currentModalTicker = null;
+let modalMainChart = null;
 
-  const panel = document.querySelector(`[data-calc="${ticker}"]`);
-  if (!panel) return;
-  panel.classList.add("open");
-  panel.style.maxHeight = panel.scrollHeight + "px";
-
-  const input = document.getElementById(`amount-${ticker}`);
-  if (input) {
-    input.value = "";
-    input.focus();
-  }
-  resetCalcPreview(ticker);
-}
-
-function closeCalculator(ticker) {
-  const panel = document.querySelector(`[data-calc="${ticker}"]`);
-  if (!panel) return;
-  panel.style.maxHeight = "0";
-  panel.classList.remove("open");
-}
-
-function resetCalcPreview(ticker) {
-  const sharesEl = document.getElementById(`calc-shares-${ticker}`);
-  const feeEl = document.getElementById(`calc-fee-${ticker}`);
-  const totalEl = document.getElementById(`calc-total-${ticker}`);
-  if (sharesEl) sharesEl.textContent = "0.0000";
-  if (feeEl) feeEl.textContent = "₹0.00";
-  if (totalEl) totalEl.textContent = "₹0.00";
-}
-
-function updateCalcPreview(ticker) {
-  const input = document.getElementById(`amount-${ticker}`);
-  const amount = parseFloat(input?.value) || 0;
+function openModal(ticker) {
+  currentModalTicker = ticker;
+  const stock = STOCKS.find((s) => s.ticker === ticker);
   const ps = priceState.get(ticker);
+  const history = sim.getPriceHistory(ticker) || [stock.basePrice];
+  const price = ps ? ps.price : stock.basePrice;
+  const pct = ps ? ps.changePct : 0;
+
+  // Populate basic info
+  document.getElementById("modal-ticker").textContent = stock.ticker;
+  document.getElementById("modal-name").textContent = stock.name;
+  document.getElementById("calc-ticker-display").textContent = stock.ticker;
+  document.getElementById("modal-high").textContent =
+    `₹${stock.price52wHigh.toFixed(2)}`;
+  document.getElementById("modal-low").textContent =
+    `₹${stock.price52wLow.toFixed(2)}`;
+
+  const riskBadge = document.getElementById("modal-risk");
+  riskBadge.textContent = stock.risk;
+  riskBadge.className = `badge badge--${stock.risk}`;
+
+  document.getElementById("modal-price").textContent = `₹${price.toFixed(2)}`;
+
+  const changeEl = document.getElementById("modal-change");
+  changeEl.textContent = `${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%`;
+  changeEl.className = `modal-change badge ${pct >= 0 ? "badge--low" : "badge--high"}`;
+
+  // Ensure modal is on front side
+  flipModalToChart();
+
+  // Clear input
+  const input = document.getElementById("modal-invest-amount");
+  if (input) input.value = "";
+  resetCalcPreviewModal();
+
+  // Draw chart
+  drawModalChart(ticker, history);
+
+  // Show modal
+  const overlay = document.getElementById("stock-modal");
+  overlay.classList.add("open");
+}
+
+function closeModal() {
+  const overlay = document.getElementById("stock-modal");
+  overlay.classList.remove("open");
+  currentModalTicker = null;
+}
+
+function flipModalToCalc() {
+  document.getElementById("modal-flipper").classList.add("is-flipped");
+  setTimeout(() => {
+    document.getElementById("modal-invest-amount").focus();
+  }, 400);
+}
+
+function flipModalToChart() {
+  document.getElementById("modal-flipper").classList.remove("is-flipped");
+}
+
+function drawModalChart(ticker, history) {
+  const canvas = document.getElementById("modal-main-chart");
+  if (!canvas) return;
+
+  const isUp = history[history.length - 1] >= history[0];
+  const color = isUp ? "#22c55e" : "#ef4444";
+
+  if (modalMainChart) {
+    modalMainChart.destroy();
+  }
+
+  const ctx = canvas.getContext("2d");
+  const gradient = ctx.createLinearGradient(0, 0, 0, 180);
+  gradient.addColorStop(
+    0,
+    isUp ? "rgba(34, 197, 94, 0.4)" : "rgba(239, 68, 68, 0.4)",
+  );
+  gradient.addColorStop(
+    1,
+    isUp ? "rgba(34, 197, 94, 0)" : "rgba(239, 68, 68, 0)",
+  );
+
+  modalMainChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: history.map((_, i) => i),
+      datasets: [
+        {
+          data: history,
+          borderColor: color,
+          backgroundColor: gradient,
+          borderWidth: 3,
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          fill: true,
+          tension: 0.4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 0 }, // Handled by our own update logic for smoothness
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return "₹" + context.parsed.y.toFixed(2);
+            },
+          },
+        },
+      },
+      scales: {
+        x: { display: false },
+        y: {
+          display: true,
+          position: "right",
+          grid: { color: "rgba(255,255,255,0.05)" },
+          min: Math.min(...history) * 0.98,
+          max: Math.max(...history) * 1.02,
+        },
+      },
+      layout: { padding: 0 },
+    },
+  });
+}
+
+function updateModalRealTime(ticker, price, pct, history) {
+  const priceEl = document.getElementById("modal-price");
+  const changeEl = document.getElementById("modal-change");
+
+  if (priceEl && changeEl) {
+    const startValue = parseFloat(priceEl.textContent.replace("₹", ""));
+    animateValue(priceEl, startValue, price, 800, "₹");
+
+    const startPct = parseFloat(
+      changeEl.textContent.replace("%", "").replace("+", ""),
+    );
+    const sign = pct >= 0 ? "+" : "";
+    animateValue(changeEl, startPct, pct, 800, sign, "%");
+    changeEl.className = `modal-change badge ${pct >= 0 ? "badge--low" : "badge--high"}`;
+  }
+
+  if (modalMainChart && history) {
+    const isUp = history[history.length - 1] >= history[0];
+    const color = isUp ? "#22c55e" : "#ef4444";
+
+    // Attempting to just update data properties to avoid flickering
+    modalMainChart.data.datasets[0].data = history;
+    modalMainChart.data.datasets[0].borderColor = color;
+    modalMainChart.options.scales.y.min = Math.min(...history) * 0.98;
+    modalMainChart.options.scales.y.max = Math.max(...history) * 1.02;
+    modalMainChart.update("none");
+  }
+
+  // Update calculator preview if amounts change behind the scenes
+  updateCalcPreviewModal();
+}
+
+// ── Calculator Modal Logic ──
+function resetCalcPreviewModal() {
+  document.getElementById("modal-calc-shares").textContent = "0.0000";
+  document.getElementById("modal-calc-fee").textContent = "₹0.00";
+  document.getElementById("modal-calc-total").textContent = "₹0.00";
+}
+
+function addInvestmentModal(addAmount) {
+  const input = document.getElementById("modal-invest-amount");
+  const current = parseFloat(input.value) || 0;
+  input.value = (current + addAmount).toFixed(2);
+  updateCalcPreviewModal();
+}
+
+function roundUpInvestmentModal() {
+  const input = document.getElementById("modal-invest-amount");
+  const current = parseFloat(input.value) || 0;
+  if (current === 0) {
+    input.value = "100.00";
+  } else {
+    const nextHundred = Math.ceil((current + 0.01) / 100) * 100;
+    input.value = nextHundred.toFixed(2);
+  }
+  updateCalcPreviewModal();
+}
+
+function updateCalcPreviewModal() {
+  if (!currentModalTicker) return;
+  const input = document.getElementById("modal-invest-amount");
+  if (!input) return;
+
+  const amount = parseFloat(input.value) || 0;
+  const ps = priceState.get(currentModalTicker);
   const price = ps
     ? ps.price
-    : STOCKS.find((s) => s.ticker === ticker)?.basePrice || 0;
+    : STOCKS.find((s) => s.ticker === currentModalTicker)?.basePrice || 0;
+
   const result = calculateFraction(amount, price);
 
-  const sharesEl = document.getElementById(`calc-shares-${ticker}`);
-  const feeEl = document.getElementById(`calc-fee-${ticker}`);
-  const totalEl = document.getElementById(`calc-total-${ticker}`);
-
-  if (sharesEl) sharesEl.textContent = result.shares.toFixed(4);
-  if (feeEl) feeEl.textContent = `₹${result.fee.toFixed(2)}`;
-  if (totalEl) totalEl.textContent = `₹${(amount + result.fee).toFixed(2)}`;
+  document.getElementById("modal-calc-shares").textContent =
+    result.shares.toFixed(4);
+  document.getElementById("modal-calc-fee").textContent =
+    `₹${result.fee.toFixed(2)}`;
+  document.getElementById("modal-calc-total").textContent =
+    `₹${(amount + result.fee).toFixed(2)}`;
 }
 
-function calculateFraction(amount, price) {
-  if (amount <= 0 || price <= 0) return { shares: 0, fee: 0 };
-  const fee = amount * FEE_RATE;
-  const investable = amount - fee;
-  const shares = investable / price;
-  return { shares, fee };
-}
-
-function confirmPurchase(ticker) {
-  const input = document.getElementById(`amount-${ticker}`);
+function confirmPurchaseModal() {
+  if (!currentModalTicker) return;
+  const input = document.getElementById("modal-invest-amount");
   const amount = parseFloat(input?.value) || 0;
 
   if (amount < 10) {
@@ -376,10 +512,10 @@ function confirmPurchase(ticker) {
     return;
   }
 
-  const ps = priceState.get(ticker);
+  const ps = priceState.get(currentModalTicker);
   const price = ps
     ? ps.price
-    : STOCKS.find((s) => s.ticker === ticker)?.basePrice || 0;
+    : STOCKS.find((s) => s.ticker === currentModalTicker)?.basePrice || 0;
   const { shares, fee } = calculateFraction(amount, price);
 
   if (shares <= 0) {
@@ -388,7 +524,7 @@ function confirmPurchase(ticker) {
   }
 
   const portfolio = JSON.parse(localStorage.getItem("portfolio") || "[]");
-  const existing = portfolio.find((h) => h.ticker === ticker);
+  const existing = portfolio.find((h) => h.ticker === currentModalTicker);
 
   if (existing) {
     const totalShares = existing.shares + shares;
@@ -398,7 +534,7 @@ function confirmPurchase(ticker) {
     existing.invested = totalCost;
   } else {
     portfolio.push({
-      ticker,
+      ticker: currentModalTicker,
       shares,
       avgBuy: (amount - fee) / shares,
       invested: amount - fee,
@@ -406,13 +542,22 @@ function confirmPurchase(ticker) {
   }
 
   localStorage.setItem("portfolio", JSON.stringify(portfolio));
-  closeCalculator(ticker);
+  closeModal();
 
-  const stock = STOCKS.find((s) => s.ticker === ticker);
+  const stock = STOCKS.find((s) => s.ticker === currentModalTicker);
   showToast(
-    `✅ Bought ${shares.toFixed(4)} shares of ${stock?.name || ticker} for ₹${amount.toFixed(2)}`,
+    `✅ Bought ${shares.toFixed(4)} shares of ${stock?.name || currentModalTicker} for ₹${amount.toFixed(2)}`,
     "success",
   );
+}
+
+// ── Calculator Core Logic ──
+function calculateFraction(amount, price) {
+  if (amount <= 0 || price <= 0) return { shares: 0, fee: 0 };
+  const fee = amount * FEE_RATE;
+  const investable = amount - fee;
+  const shares = investable / price;
+  return { shares, fee };
 }
 
 // ── Toast ──

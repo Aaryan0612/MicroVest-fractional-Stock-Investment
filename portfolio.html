@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/portfolio.css" />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body class="page-portfolio">
     <!-- Aurora Background -->
@@ -108,21 +110,11 @@
       <section class="value-trend-section" aria-label="Portfolio value trend">
         <h2>Value Over Time</h2>
         <div class="trend-chart-container">
-          <svg
+          <canvas
+            id="portfolio-trend-chart"
             class="trend-chart"
-            id="trend-chart"
-            viewBox="0 0 400 80"
-            preserveAspectRatio="none"
-          >
-            <defs>
-              <linearGradient id="trend-gradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="rgba(0, 212, 255, 0.3)" />
-                <stop offset="100%" stop-color="rgba(0, 212, 255, 0)" />
-              </linearGradient>
-            </defs>
-            <path class="trend-area" d="" fill="url(#trend-gradient)" />
-            <polyline class="trend-line" points="" />
-          </svg>
+            height="80"
+          ></canvas>
           <div class="trend-labels">
             <span class="trend-label-start" id="trend-start">--</span>
             <span class="trend-label-end" id="trend-end">--</span>

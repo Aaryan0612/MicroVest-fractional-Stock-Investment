@@ -1111,27 +1111,163 @@
 /* ══════════════════════════════════════════
    LIGHT THEME OVERRIDES
 ══════════════════════════════════════════ */
-:root[data-theme="light"] .step-number {
-  color: rgba(0, 0, 0, 0.03);
+
+/* Navbar — landing variant */
+:root[data-theme="light"] .navbar--landing.scrolled {
+  background: rgba(240, 244, 255, 0.95);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-bottom-color: rgba(99, 102, 241, 0.18);
+  box-shadow: 0 4px 24px rgba(50, 70, 150, 0.1);
 }
 
+/* Hero */
 :root[data-theme="light"] .hero-video-overlay {
   background: linear-gradient(
     to bottom,
-    rgba(240, 244, 255, 0.4) 0%,
-    rgba(240, 244, 255, 0.1) 40%,
-    rgba(240, 244, 255, 0.2) 70%,
-    rgba(240, 244, 255, 0.8) 100%
+    rgba(15, 20, 50, 0.45) 0%,
+    rgba(15, 20, 50, 0.18) 40%,
+    rgba(15, 20, 50, 0.28) 70%,
+    rgba(15, 20, 50, 0.75) 100%
   );
 }
 
 :root[data-theme="light"] .hero-headline {
   color: #fff;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.55);
 }
 
+/* Hero floating ticker card */
+:root[data-theme="light"] .hero-ticker-float {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow:
+    0 20px 50px rgba(50, 70, 150, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+}
+
+:root[data-theme="light"] .ticker-preview__footer {
+  border-top-color: rgba(99, 102, 241, 0.12);
+}
+
+/* Hooks bar */
 :root[data-theme="light"] .hooks-section {
-  background: rgba(240, 244, 255, 0.95);
+  background: rgba(255, 255, 255, 0.75);
+  border-top-color: rgba(99, 102, 241, 0.12);
+  border-bottom-color: rgba(99, 102, 241, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:root[data-theme="light"] .hook-divider {
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* Step cards */
+:root[data-theme="light"] .step-number {
+  color: rgba(99, 102, 241, 0.05);
+}
+
+:root[data-theme="light"] .step-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  box-shadow: 0 4px 16px rgba(50, 70, 150, 0.07);
+}
+
+:root[data-theme="light"] .step-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 40px rgba(50, 70, 150, 0.14),
+    0 0 0 1px rgba(99, 102, 241, 0.25);
+}
+
+:root[data-theme="light"] .step-icon-wrap {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+:root[data-theme="light"] .step-tag {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+/* Featured stock cards */
+:root[data-theme="light"] .featured-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  box-shadow: 0 4px 16px rgba(50, 70, 150, 0.07);
+}
+
+:root[data-theme="light"] .featured-card:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow:
+    0 14px 36px rgba(50, 70, 150, 0.14),
+    0 0 16px rgba(99, 102, 241, 0.08);
+}
+
+:root[data-theme="light"] .f-sector {
+  background: rgba(99, 102, 241, 0.06);
+  color: var(--text-muted);
+}
+
+:root[data-theme="light"] .featured-card--cta {
+  background: rgba(99, 102, 241, 0.04);
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+:root[data-theme="light"] .featured-card--cta:hover {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.45);
+}
+
+/* Testimonial cards */
+:root[data-theme="light"] .testimonial-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  box-shadow: 0 4px 16px rgba(50, 70, 150, 0.07);
+}
+
+:root[data-theme="light"] .testimonial-card--featured {
+  border-color: rgba(99, 102, 241, 0.3);
+  background: rgba(99, 102, 241, 0.04);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.1);
+}
+
+:root[data-theme="light"] .testimonial-author {
+  border-top-color: rgba(99, 102, 241, 0.12);
+}
+
+/* Bento feature cards */
+:root[data-theme="light"] .bento-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  box-shadow: 0 4px 16px rgba(50, 70, 150, 0.07);
+}
+
+:root[data-theme="light"] .bento-card:hover {
+  box-shadow: 0 20px 40px rgba(50, 70, 150, 0.13);
+}
+
+:root[data-theme="light"] .bento-chart-preview {
+  background: rgba(99, 102, 241, 0.04);
+  border-color: rgba(99, 102, 241, 0.1);
+}
+
+/* CTA Banner */
+:root[data-theme="light"] .cta-banner {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1),
+    rgba(139, 92, 246, 0.08)
+  );
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 8px 32px rgba(50, 70, 150, 0.1);
+}
+
+/* Section labels */
+:root[data-theme="light"] .section-label {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.2);
 }
 
 /* ══════════════════════════════════════════

@@ -358,6 +358,33 @@
   line-height: var(--leading-relaxed);
 }
 
+/* ══════════════════════════════════════════
+   LIGHT THEME OVERRIDES — Education
+══════════════════════════════════════════ */
+
+:root[data-theme="light"] .risk-card__bar {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+:root[data-theme="light"] .card-diagram__item {
+  border-bottom-color: rgba(99, 102, 241, 0.1);
+}
+
+:root[data-theme="light"] .quiz-progress__bar {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+:root[data-theme="light"] .quiz-option {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(99, 102, 241, 0.18);
+  color: var(--text-primary);
+}
+:root[data-theme="light"]
+  .quiz-option:hover:not(.correct):not(.incorrect):not(:disabled) {
+  background: rgba(99, 102, 241, 0.06);
+  border-color: var(--accent-primary);
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .edu-cards-grid,

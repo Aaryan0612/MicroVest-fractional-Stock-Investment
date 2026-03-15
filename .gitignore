@@ -1,0 +1,9 @@
+# Editor
+.vscode/
+
+# Project docs / planning (not for repo)
+PRD/
+
+# macOS system files
+.DS_Store
+**/.DS_Store

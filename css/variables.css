@@ -5,10 +5,10 @@
 
 :root {
   /* ── Background Layers ── */
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-tertiary: #1a2035;
-  --bg-surface: #1e2540;
+  --bg-primary: #0e1d34;
+  --bg-secondary: #122744;
+  --bg-tertiary: #173055;
+  --bg-surface: #1b3a66;
 
   /* ── Text Colors ── */
   --text-primary: #f1f5f9;
@@ -17,16 +17,18 @@
   --text-inverse: #0a0e1a;
 
   /* ── Brand / Accent ── */
-  --accent-primary: #6366f1;
-  --accent-secondary: #8b5cf6;
-  --accent-glow: rgba(99, 102, 241, 0.35);
-  --accent-hover: #818cf8;
+  --accent-primary: #8a6cff;
+  --accent-secondary: #4f86eb;
+  --accent-primary-rgb: 138, 108, 255;
+  --accent-secondary-rgb: 79, 134, 235;
+  --accent-glow: rgba(138, 108, 255, 0.35);
+  --accent-hover: #a28cff;
 
   /* ── Aurora Gradient Colors ── */
-  --aurora-1: rgba(99, 102, 241, 0.3);
-  --aurora-2: rgba(139, 92, 246, 0.25);
-  --aurora-3: rgba(34, 211, 238, 0.2);
-  --aurora-4: rgba(236, 72, 153, 0.15);
+  --aurora-1: rgba(138, 108, 255, 0.28);
+  --aurora-2: rgba(79, 134, 235, 0.24);
+  --aurora-3: rgba(63, 118, 221, 0.2);
+  --aurora-4: rgba(46, 96, 191, 0.18);
 
   /* ── Semantic Finance Colors ── */
   --color-gain: #22c55e;
@@ -121,38 +123,46 @@
 /* ===================== LIGHT THEME OVERRIDES ===================== */
 :root[data-theme="light"] {
   /* Backgrounds */
-  --bg-primary: #f0f4ff;
-  --bg-secondary: #e8eeff;
-  --bg-tertiary: #dde4f8;
+  --bg-primary: #eef2ff;
+  --bg-secondary: #e5ebff;
+  --bg-tertiary: #dbe4ff;
   --bg-surface: #ffffff;
-  --bg-elevated: #e8eeff;
-  --bg-border: #c8d2ea;
-  --bg-overlay: rgba(240, 244, 255, 0.95);
+  --bg-elevated: #e5ebff;
+  --bg-border: #c7d3f3;
+  --bg-overlay: rgba(238, 242, 255, 0.95);
 
   /* Text */
   --text-primary: #0d1117;
-  --text-secondary: #3a4a6b;
-  --text-muted: #6b7a99;
-  --text-inverse: #f0f4ff;
+  --text-secondary: #384a70;
+  --text-muted: #62759e;
+  --text-inverse: #eef2ff;
+
+  /* Brand */
+  --accent-primary: #7d63ef;
+  --accent-secondary: #3f71b8;
+  --accent-primary-rgb: 125, 99, 239;
+  --accent-secondary-rgb: 63, 113, 184;
+  --accent-hover: #8f78f4;
+  --accent-glow: rgba(125, 99, 239, 0.22);
 
   /* Glass — crisp white cards with blue-tinted borders */
   --glass-bg: rgba(255, 255, 255, 0.82);
   --glass-bg-hover: rgba(255, 255, 255, 0.96);
-  --glass-border: rgba(99, 102, 241, 0.18);
-  --glass-border-hover: rgba(99, 102, 241, 0.35);
+  --glass-border: rgba(125, 99, 239, 0.18);
+  --glass-border-hover: rgba(125, 99, 239, 0.34);
   --glass-blur: 16px;
-  --glass-shadow: 0 8px 32px rgba(80, 100, 200, 0.1);
+  --glass-shadow: 0 8px 32px rgba(65, 90, 155, 0.1);
 
   /* Aurora — soft pastel in light mode */
-  --aurora-1: rgba(99, 102, 241, 0.12);
-  --aurora-2: rgba(139, 92, 246, 0.1);
-  --aurora-3: rgba(34, 211, 238, 0.08);
-  --aurora-4: rgba(236, 72, 153, 0.07);
+  --aurora-1: rgba(125, 99, 239, 0.12);
+  --aurora-2: rgba(70, 122, 206, 0.1);
+  --aurora-3: rgba(40, 86, 156, 0.08);
+  --aurora-4: rgba(23, 57, 93, 0.07);
 
   /* Shadows — soft blue-tinted */
-  --shadow-sm: 0 1px 3px rgba(50, 70, 150, 0.08);
-  --shadow-md: 0 4px 16px rgba(50, 70, 150, 0.1);
-  --shadow-lg: 0 10px 32px rgba(50, 70, 150, 0.13);
-  --shadow-xl: 0 20px 48px rgba(50, 70, 150, 0.15);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.2);
+  --shadow-sm: 0 1px 3px rgba(45, 70, 130, 0.08);
+  --shadow-md: 0 4px 16px rgba(45, 70, 130, 0.1);
+  --shadow-lg: 0 10px 32px rgba(45, 70, 130, 0.13);
+  --shadow-xl: 0 20px 48px rgba(45, 70, 130, 0.15);
+  --shadow-glow: 0 0 20px rgba(125, 99, 239, 0.2);
 }

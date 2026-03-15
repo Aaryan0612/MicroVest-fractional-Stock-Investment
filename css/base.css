@@ -110,8 +110,8 @@ textarea {
   filter: blur(120px);
   background: radial-gradient(
     circle,
-    rgba(139, 92, 246, 0.18),
-    rgba(34, 211, 238, 0.12),
+    rgba(var(--accent-primary-rgb), 0.2),
+    rgba(var(--accent-secondary-rgb), 0.16),
     transparent 70%
   );
   animation: aurora-shift 15s ease-in-out infinite alternate-reverse;
@@ -122,12 +122,12 @@ textarea {
   background:
     radial-gradient(
       ellipse 90% 70% at 15% 25%,
-      rgba(99, 102, 241, 0.1) 0%,
+      rgba(var(--accent-primary-rgb), 0.1) 0%,
       transparent 65%
     ),
     radial-gradient(
       ellipse 70% 90% at 85% 75%,
-      rgba(139, 92, 246, 0.08) 0%,
+      rgba(var(--accent-secondary-rgb), 0.08) 0%,
       transparent 65%
     );
 }
@@ -145,7 +145,7 @@ textarea {
   background: rgba(8, 12, 20, 0.65);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-bottom: 1px solid rgba(0, 212, 255, 0.12);
+  border-bottom: 1px solid rgba(var(--accent-primary-rgb), 0.16);
   transition:
     background 0.3s ease,
     box-shadow 0.3s ease,
@@ -155,7 +155,7 @@ textarea {
 .navbar.scrolled {
   background: rgba(8, 12, 20, 0.9);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-  border-bottom-color: rgba(0, 212, 255, 0.2);
+  border-bottom-color: rgba(var(--accent-primary-rgb), 0.24);
 }
 
 .navbar__brand {
@@ -432,14 +432,14 @@ textarea {
 /* ── Light Mode: Navbar & Nav ── */
 :root[data-theme="light"] .navbar {
   background: rgba(240, 244, 255, 0.85);
-  border-bottom-color: rgba(99, 102, 241, 0.15);
+  border-bottom-color: rgba(var(--accent-primary-rgb), 0.15);
   box-shadow: 0 2px 12px rgba(50, 70, 150, 0.08);
 }
 
 :root[data-theme="light"] .navbar.scrolled {
   background: rgba(240, 244, 255, 0.97);
   box-shadow: 0 4px 24px rgba(50, 70, 150, 0.12);
-  border-bottom-color: rgba(99, 102, 241, 0.2);
+  border-bottom-color: rgba(var(--accent-primary-rgb), 0.2);
 }
 
 :root[data-theme="light"] .navbar__link {
@@ -447,7 +447,7 @@ textarea {
 }
 
 :root[data-theme="light"] .navbar__link:hover {
-  background: rgba(99, 102, 241, 0.07);
+  background: rgba(var(--accent-primary-rgb), 0.07);
   color: var(--text-primary);
 }
 
@@ -461,7 +461,7 @@ textarea {
 
 :root[data-theme="light"] .footer {
   background: rgba(255, 255, 255, 0.7);
-  border-top-color: rgba(99, 102, 241, 0.15);
+  border-top-color: rgba(var(--accent-primary-rgb), 0.15);
   color: var(--text-muted);
 }
 
@@ -471,17 +471,17 @@ textarea {
     background: rgba(240, 244, 255, 0.98);
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
-    border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+    border-bottom: 1px solid rgba(var(--accent-primary-rgb), 0.15);
   }
 
   :root[data-theme="light"] .navbar__link {
     color: var(--text-secondary);
-    border-bottom-color: rgba(99, 102, 241, 0.08);
+    border-bottom-color: rgba(var(--accent-primary-rgb), 0.08);
   }
 
   :root[data-theme="light"] .navbar__link:hover,
   :root[data-theme="light"] .navbar__link--active {
-    background: rgba(99, 102, 241, 0.07);
+    background: rgba(var(--accent-primary-rgb), 0.07);
     color: var(--text-primary);
   }
 

@@ -401,10 +401,15 @@ function updateTrendChart() {
 
   // First render — build the chart
   const ctx = canvas.getContext("2d");
+  const styles = getComputedStyle(document.documentElement);
+  const accentPrimary =
+    styles.getPropertyValue("--accent-primary").trim() || "#8a6cff";
+  const accentPrimaryRgb =
+    styles.getPropertyValue("--accent-primary-rgb").trim() || "138, 108, 255";
   const gradient = ctx.createLinearGradient(0, 0, 0, 220);
-  gradient.addColorStop(0, "rgba(99, 102, 241, 0.28)");
-  gradient.addColorStop(0.6, "rgba(99, 102, 241, 0.08)");
-  gradient.addColorStop(1, "rgba(99, 102, 241, 0)");
+  gradient.addColorStop(0, `rgba(${accentPrimaryRgb}, 0.28)`);
+  gradient.addColorStop(0.6, `rgba(${accentPrimaryRgb}, 0.08)`);
+  gradient.addColorStop(1, `rgba(${accentPrimaryRgb}, 0)`);
 
   trendChartInstance = new Chart(ctx, {
     type: "line",
@@ -415,12 +420,12 @@ function updateTrendChart() {
           // Dataset 0: Portfolio value — solid, filled
           label: "Portfolio Value",
           data: valueHist,
-          borderColor: "#6366f1",
+          borderColor: accentPrimary,
           backgroundColor: gradient,
           borderWidth: 2.5,
           pointRadius: 0,
           pointHoverRadius: 6,
-          pointHoverBackgroundColor: "#6366f1",
+          pointHoverBackgroundColor: accentPrimary,
           pointHoverBorderColor: "#fff",
           pointHoverBorderWidth: 2,
           fill: true,

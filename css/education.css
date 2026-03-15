@@ -229,7 +229,7 @@
 
 .quiz-option:hover:not(.correct):not(.incorrect):not(:disabled) {
   border-color: var(--accent-primary);
-  background: rgba(99, 102, 241, 0.08);
+  background: rgba(var(--accent-primary-rgb), 0.1);
 }
 
 .quiz-option.correct {
@@ -363,25 +363,25 @@
 ══════════════════════════════════════════ */
 
 :root[data-theme="light"] .risk-card__bar {
-  background: rgba(99, 102, 241, 0.08);
+  background: rgba(var(--accent-primary-rgb), 0.08);
 }
 
 :root[data-theme="light"] .card-diagram__item {
-  border-bottom-color: rgba(99, 102, 241, 0.1);
+  border-bottom-color: rgba(var(--accent-primary-rgb), 0.1);
 }
 
 :root[data-theme="light"] .quiz-progress__bar {
-  background: rgba(99, 102, 241, 0.08);
+  background: rgba(var(--accent-primary-rgb), 0.08);
 }
 
 :root[data-theme="light"] .quiz-option {
   background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(99, 102, 241, 0.18);
+  border-color: rgba(var(--accent-primary-rgb), 0.18);
   color: var(--text-primary);
 }
 :root[data-theme="light"]
   .quiz-option:hover:not(.correct):not(.incorrect):not(:disabled) {
-  background: rgba(99, 102, 241, 0.06);
+  background: rgba(var(--accent-primary-rgb), 0.07);
   border-color: var(--accent-primary);
 }
 

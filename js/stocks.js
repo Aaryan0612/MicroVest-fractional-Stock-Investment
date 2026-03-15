@@ -567,11 +567,14 @@ function confirmPurchaseModal() {
   if (pLog.length > 60) pLog.shift();
   localStorage.setItem("mv-purchase-log", JSON.stringify(pLog));
 
+  // Capture stock info BEFORE closeModal() nulls currentModalTicker
+  const stock = STOCKS.find((s) => s.ticker === currentModalTicker);
+  const stockLabel = stock?.name || currentModalTicker;
+
   closeModal();
 
-  const stock = STOCKS.find((s) => s.ticker === currentModalTicker);
   showToast(
-    `✅ Bought ${shares.toFixed(4)} shares of ${stock?.name || currentModalTicker} for ₹${amount.toFixed(2)}`,
+    `✅ Bought ${shares.toFixed(4)} shares of ${stockLabel} for ₹${amount.toFixed(2)}`,
     "success",
   );
 }

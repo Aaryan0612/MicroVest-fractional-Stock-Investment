@@ -1,168 +1,303 @@
 /* ============================================
-   MicroVest — Design Tokens (variables.css)
-   Deep Space Finance · Dark Glassmorphism + Aurora Glow
+   MicroVest — Design System v4.0
+   Calm · Trustworthy · Premium · Readable
    ============================================ */
 
+/* ── Font Imports ── */
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=Inter+Mono:wght@400;500;600&display=swap");
+
 :root {
-  /* ── Background Layers ── */
-  --bg-primary: #0e1d34;
-  --bg-secondary: #122744;
-  --bg-tertiary: #173055;
-  --bg-surface: #1b3a66;
+  /* ════════════════════════════════════════
+     BACKGROUND LAYERS — Deep Navy
+     Navy adds richness; pure black feels empty
+  ════════════════════════════════════════ */
+  --bg-primary:        #0A1024;   /* Base page background */
+  --bg-secondary:      #0E1530;   /* Subtle zone separation */
+  --bg-surface:        #121A35;   /* Cards, panels */
+  --bg-elevated:       #1B2552;   /* Dropdowns, modals, inputs above surface */
+  --bg-overlay:        rgba(10, 16, 36, 0.92);   /* Navbar frosted glass */
+  --bg-overlay-dark:   rgba(7, 11, 26, 0.80);    /* Modal backdrops */
 
-  /* ── Text Colors ── */
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-inverse: #0a0e1a;
+  /* ════════════════════════════════════════
+     ACCENT COLORS — Restrained, not dominant
+  ════════════════════════════════════════ */
+  --accent-primary:    #4F6EF7;   /* Indigo blue — trustworthy, Stripe-adjacent */
+  --accent-secondary:  #7C8CFF;   /* Lighter indigo for gradients */
+  --accent-premium:    #F5B942;   /* Amber gold — premium / achievement only */
 
-  /* ── Brand / Accent ── */
-  --accent-primary: #8a6cff;
-  --accent-secondary: #4f86eb;
-  --accent-primary-rgb: 138, 108, 255;
-  --accent-secondary-rgb: 79, 134, 235;
-  --accent-glow: rgba(138, 108, 255, 0.35);
-  --accent-hover: #a28cff;
+  /* RGB versions for rgba() compositions */
+  --accent-primary-rgb:   79, 110, 247;
+  --accent-secondary-rgb: 124, 140, 255;
+  --accent-premium-rgb:   245, 185, 66;
 
-  /* ── Aurora Gradient Colors ── */
-  --aurora-1: rgba(138, 108, 255, 0.28);
-  --aurora-2: rgba(79, 134, 235, 0.24);
-  --aurora-3: rgba(63, 118, 221, 0.2);
-  --aurora-4: rgba(46, 96, 191, 0.18);
+  /* Hover / dim variants */
+  --accent-primary-hover:  #6B85F9;
+  --accent-primary-dim:    #3B56D4;
 
-  /* ── Semantic Finance Colors ── */
-  --color-gain: #22c55e;
-  --color-gain-bg: rgba(34, 197, 94, 0.12);
-  --color-loss: #ef4444;
-  --color-loss-bg: rgba(239, 68, 68, 0.12);
-  --color-neutral: #f59e0b;
-  --color-neutral-bg: rgba(245, 158, 11, 0.12);
+  /* ── Legacy aliases (backward compat with existing CSS) ── */
+  --primary:             var(--accent-primary);
+  --primary-hover:       var(--accent-primary-hover);
+  --primary-dim:         var(--accent-primary-dim);
+  --primary-rgb:         var(--accent-primary-rgb);
+  --secondary:           var(--accent-secondary);
+  --secondary-hover:     #9099FF;
+  --secondary-rgb:       var(--accent-secondary-rgb);
+  --accent-glow:         rgba(79, 110, 247, 0.22);
+  --accent-hover:        var(--accent-primary-hover);
 
-  /* ── Risk Badge Colors ── */
-  --risk-low: #22c55e;
-  --risk-low-bg: rgba(34, 197, 94, 0.15);
-  --risk-medium: #f59e0b;
-  --risk-medium-bg: rgba(245, 158, 11, 0.15);
-  --risk-high: #ef4444;
-  --risk-high-bg: rgba(239, 68, 68, 0.15);
+  /* ════════════════════════════════════════
+     FINANCIAL SEMANTIC COLORS
+  ════════════════════════════════════════ */
+  --success:           #10B981;   /* Emerald — gain / positive */
+  --success-bg:        rgba(16, 185, 129, 0.10);
+  --success-border:    rgba(16, 185, 129, 0.22);
+  --danger:            #EF4444;   /* Red — loss / negative */
+  --danger-bg:         rgba(239, 68, 68, 0.10);
+  --danger-border:     rgba(239, 68, 68, 0.22);
+  --danger-hover:      #DC2626;
 
-  /* ── Glassmorphism Tokens ── */
-  --glass-bg: rgba(14, 20, 33, 0.55);
-  --glass-bg-hover: rgba(14, 20, 33, 0.7);
-  --glass-border: rgba(148, 163, 184, 0.15);
-  --glass-border-hover: rgba(148, 163, 184, 0.25);
-  --glass-blur: 16px;
-  --glass-blur-heavy: 24px;
+  /* ── Legacy finance aliases ── */
+  --color-gain:        var(--success);
+  --color-gain-bg:     var(--success-bg);
+  --color-gain-border: var(--success-border);
+  --color-loss:        var(--danger);
+  --color-loss-bg:     var(--danger-bg);
+  --color-loss-border: var(--danger-border);
+  --color-loss-hover:  var(--danger-hover);
+  --color-neutral:     #F59E0B;
+  --color-neutral-bg:  rgba(245, 158, 11, 0.10);
 
-  /* ── Typography ── */
-  --font-primary:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", monospace;
+  /* Risk badges */
+  --risk-low:          #10B981;
+  --risk-low-bg:       rgba(16, 185, 129, 0.12);
+  --risk-medium:       #F59E0B;
+  --risk-medium-bg:    rgba(245, 158, 11, 0.12);
+  --risk-high:         #EF4444;
+  --risk-high-bg:      rgba(239, 68, 68, 0.12);
 
-  --text-xs: 0.75rem; /* 12px */
-  --text-sm: 0.875rem; /* 14px */
-  --text-base: 1rem; /* 16px */
-  --text-lg: 1.125rem; /* 18px */
-  --text-xl: 1.25rem; /* 20px */
-  --text-2xl: 1.5rem; /* 24px */
-  --text-3xl: 1.875rem; /* 30px */
-  --text-4xl: 2.25rem; /* 36px */
-  --text-5xl: 3rem; /* 48px */
+  /* ════════════════════════════════════════
+     TYPOGRAPHY COLORS
+  ════════════════════════════════════════ */
+  --text-primary:      #F1F5F9;   /* Near-white — WCAG AAA on bg-primary */
+  --text-secondary:    #94A3B8;   /* Slate — WCAG AA on bg-primary */
+  --text-muted:        #64748B;   /* Muted labels (use sparingly) */
+  --text-inverse:      #0A1024;   /* Dark text on light surfaces */
+  --text-white:        #FFFFFF;
 
-  --font-normal: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
+  /* ════════════════════════════════════════
+     BORDERS & DIVIDERS
+  ════════════════════════════════════════ */
+  --border-subtle:     rgba(255, 255, 255, 0.07);   /* Cards, panels */
+  --border-default:    rgba(255, 255, 255, 0.12);   /* Controls, inputs */
+  --border-hover:      rgba(79, 110, 247, 0.40);    /* Focus / hover states */
+  --border-active:     rgba(79, 110, 247, 0.65);    /* Active selection */
+  --border-white-faint: rgba(255, 255, 255, 0.06);
+  --border-white-mid:   rgba(255, 255, 255, 0.12);
 
-  --leading-tight: 1.25;
-  --leading-normal: 1.5;
+  /* Glass tokens — kept for components that use them */
+  --glass-bg:          rgba(18, 26, 53, 0.78);
+  --glass-bg-hover:    rgba(27, 37, 82, 0.90);
+  --glass-border:      var(--border-subtle);
+  --glass-border-hover: var(--border-hover);
+  --glass-blur:        16px;
+  --glass-blur-heavy:  24px;
+
+  /* Aurora — subtle; for bg ambient only, NOT visible blobs */
+  --aurora-1:          rgba(79, 110, 247, 0.12);
+  --aurora-2:          rgba(124, 140, 255, 0.09);
+  --aurora-3:          rgba(79, 110, 247, 0.07);
+  --aurora-4:          rgba(60, 90, 200, 0.05);
+
+  /* ════════════════════════════════════════
+     SHADOWS
+  ════════════════════════════════════════ */
+  --shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md:   0 4px 12px rgba(0, 0, 0, 0.40);
+  --shadow-lg:   0 10px 24px rgba(0, 0, 0, 0.45);
+  --shadow-xl:   0 20px 40px rgba(0, 0, 0, 0.50);
+  --shadow-glow: 0 4px 16px rgba(79, 110, 247, 0.22);   /* Subtle only */
+  --shadow-glow-sm: 0 2px 8px rgba(79, 110, 247, 0.16);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.30);
+
+  /* ════════════════════════════════════════
+     TYPOGRAPHY — Professional Fintech Stack
+  ════════════════════════════════════════ */
+
+  /* Bricolage Grotesque — confident, warm display font for headings */
+  --font-display:  "Bricolage Grotesque", "Inter", sans-serif;
+
+  /* Inter — the industry-standard UI / body font */
+  --font-primary:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Inter Mono — tabular financial data alignment */
+  --font-mono:     "Inter Mono", "JetBrains Mono", "Fira Code", monospace;
+
+  /* ── Type Scale ── */
+  --text-xs:    0.75rem;    /* 12px */
+  --text-sm:    0.875rem;   /* 14px */
+  --text-base:  1rem;       /* 16px */
+  --text-lg:    1.125rem;   /* 18px */
+  --text-xl:    1.25rem;    /* 20px */
+  --text-2xl:   1.5rem;     /* 24px */
+  --text-3xl:   1.875rem;   /* 30px */
+  --text-4xl:   2.25rem;    /* 36px */
+  --text-5xl:   4rem;       /* 64px — hero scale */
+
+  /* ── Weights ── */
+  --font-normal:    400;
+  --font-medium:    500;
+  --font-semibold:  600;
+  --font-bold:      700;
+  --font-extrabold: 800;
+
+  /* ── Leading ── */
+  --leading-tight:   1.15;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
   --leading-relaxed: 1.625;
 
-  /* ── Spacing ── */
-  --space-1: 0.25rem; /* 4px */
-  --space-2: 0.5rem; /* 8px */
-  --space-3: 0.75rem; /* 12px */
-  --space-4: 1rem; /* 16px */
-  --space-5: 1.25rem; /* 20px */
-  --space-6: 1.5rem; /* 24px */
-  --space-8: 2rem; /* 32px */
-  --space-10: 2.5rem; /* 40px */
-  --space-12: 3rem; /* 48px */
-  --space-16: 4rem; /* 64px */
-  --space-20: 5rem; /* 80px */
+  /* ── Tracking ── */
+  --tracking-tight:  -0.02em;   /* Tasteful — not extreme */
+  --tracking-snug:   -0.01em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.08em;
 
-  /* ── Border Radius ── */
-  --radius-sm: 0.375rem; /* 6px */
-  --radius-md: 0.5rem; /* 8px */
-  --radius-lg: 0.75rem; /* 12px */
-  --radius-xl: 1rem; /* 16px */
-  --radius-2xl: 1.5rem; /* 24px */
-  --radius-full: 9999px;
+  /* ════════════════════════════════════════
+     SPACING — 8px grid
+  ════════════════════════════════════════ */
+  --space-1:   0.25rem;   /* 4px */
+  --space-2:   0.5rem;    /* 8px */
+  --space-3:   0.75rem;   /* 12px */
+  --space-4:   1rem;      /* 16px */
+  --space-5:   1.25rem;   /* 20px */
+  --space-6:   1.5rem;    /* 24px */
+  --space-8:   2rem;      /* 32px */
+  --space-10:  2.5rem;    /* 40px */
+  --space-12:  3rem;      /* 48px */
+  --space-16:  4rem;      /* 64px */
+  --space-20:  5rem;      /* 80px */
 
-  /* ── Shadows ── */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md:
-    0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
-  --shadow-xl:
-    0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 20px var(--accent-glow);
+  /* ════════════════════════════════════════
+     BORDER RADIUS
+  ════════════════════════════════════════ */
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   10px;    /* Buttons use this — rounded rect, not pill */
+  --radius-xl:   16px;    /* Cards */
+  --radius-2xl:  20px;
+  --radius-full: 9999px;  /* Badges only */
 
-  /* ── Transitions ── */
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
-  --transition-slow: 350ms ease;
-  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* ════════════════════════════════════════
+     TRANSITIONS
+  ════════════════════════════════════════ */
+  --transition-fast:   150ms ease;
+  --transition-base:   220ms ease;
+  --transition-slow:   350ms ease;
+  --transition-spring: 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* ── Layout ── */
-  --max-width: 1280px;
-  --navbar-height: 64px;
+  /* ════════════════════════════════════════
+     LAYOUT
+  ════════════════════════════════════════ */
+  --max-width:      1280px;
+  --navbar-height:  64px;
 }
 
-/* ===================== LIGHT THEME OVERRIDES ===================== */
+/* ════════════════════════════════════════════
+   LIGHT THEME — Premium Fintech Canvas
+   Soft neutral base · White cards · Clear hierarchy
+════════════════════════════════════════════ */
 :root[data-theme="light"] {
-  /* Backgrounds */
-  --bg-primary: #eef2ff;
-  --bg-secondary: #e5ebff;
-  --bg-tertiary: #dbe4ff;
-  --bg-surface: #ffffff;
-  --bg-elevated: #e5ebff;
-  --bg-border: #c7d3f3;
-  --bg-overlay: rgba(238, 242, 255, 0.95);
+  /* ── Background layers ── */
+  --bg-primary:        #F4F6FA;   /* Soft neutral canvas — never pure white */
+  --bg-secondary:      #EEF1F8;
+  --bg-surface:        #FFFFFF;   /* Cards float off the canvas */
+  --bg-elevated:       #FFFFFF;   /* Dropdowns, modals */
+  --bg-overlay:        rgba(255, 255, 255, 0.97);   /* Navbar: solid white */
+  --bg-overlay-dark:   rgba(15, 23, 42, 0.30);
 
-  /* Text */
-  --text-primary: #0d1117;
-  --text-secondary: #384a70;
-  --text-muted: #62759e;
-  --text-inverse: #eef2ff;
+  /* ── Text hierarchy ── */
+  --text-primary:      #0F172A;   /* Deep ink — WCAG AAA on white */
+  --text-secondary:    #475569;   /* Slate 600 — clear but calm */
+  --text-muted:        #94A3B8;   /* Slate 400 — metadata / labels */
+  --text-inverse:      #FFFFFF;
 
-  /* Brand */
-  --accent-primary: #7d63ef;
-  --accent-secondary: #3f71b8;
-  --accent-primary-rgb: 125, 99, 239;
-  --accent-secondary-rgb: 63, 113, 184;
-  --accent-hover: #8f78f4;
-  --accent-glow: rgba(125, 99, 239, 0.22);
+  /* ── Accent — same vibrance as dark mode ── */
+  --accent-primary:        #4F6EF7;
+  --accent-secondary:      #7C8CFF;
+  --accent-premium:        #F5B942;
+  --accent-primary-hover:  #6B85F9;
+  --accent-primary-dim:    #3B56D4;
+  --accent-primary-rgb:    79, 110, 247;
+  --accent-secondary-rgb:  124, 140, 255;
+  --accent-premium-rgb:    245, 185, 66;
+  --accent-glow:           rgba(79, 110, 247, 0.14);
+  --accent-hover:          #6B85F9;
 
-  /* Glass — crisp white cards with blue-tinted borders */
-  --glass-bg: rgba(255, 255, 255, 0.82);
-  --glass-bg-hover: rgba(255, 255, 255, 0.96);
-  --glass-border: rgba(125, 99, 239, 0.18);
-  --glass-border-hover: rgba(125, 99, 239, 0.34);
-  --glass-blur: 16px;
-  --glass-shadow: 0 8px 32px rgba(65, 90, 155, 0.1);
+  --primary:           var(--accent-primary);
+  --primary-hover:     var(--accent-primary-hover);
+  --primary-dim:       var(--accent-primary-dim);
+  --primary-rgb:       var(--accent-primary-rgb);
+  --secondary:         var(--accent-secondary);
+  --secondary-hover:   #9099FF;
+  --secondary-rgb:     var(--accent-secondary-rgb);
 
-  /* Aurora — soft pastel in light mode */
-  --aurora-1: rgba(125, 99, 239, 0.12);
-  --aurora-2: rgba(70, 122, 206, 0.1);
-  --aurora-3: rgba(40, 86, 156, 0.08);
-  --aurora-4: rgba(23, 57, 93, 0.07);
+  /* ── Borders — use HEX so cards have clear edge ── */
+  --border-subtle:      #E2E8F0;   /* Slate 200: visible but calm */
+  --border-default:     #CBD5E1;   /* Slate 300: inputs, dividers */
+  --border-hover:       rgba(79, 110, 247, 0.40);
+  --border-active:      rgba(79, 110, 247, 0.65);
+  --border-white-faint: rgba(79, 110, 247, 0.06);
+  --border-white-mid:   rgba(79, 110, 247, 0.14);
 
-  /* Shadows — soft blue-tinted */
-  --shadow-sm: 0 1px 3px rgba(45, 70, 130, 0.08);
-  --shadow-md: 0 4px 16px rgba(45, 70, 130, 0.1);
-  --shadow-lg: 0 10px 32px rgba(45, 70, 130, 0.13);
-  --shadow-xl: 0 20px 48px rgba(45, 70, 130, 0.15);
-  --shadow-glow: 0 0 20px rgba(125, 99, 239, 0.2);
+  /* Glass tokens — white-surfaced */
+  --glass-bg:          rgba(255, 255, 255, 0.92);
+  --glass-bg-hover:    rgba(255, 255, 255, 1);
+  --glass-border:      var(--border-subtle);
+  --glass-border-hover: var(--border-hover);
+
+  /* Aurora — extremely subtle, just a hint of indigo */
+  --aurora-1: rgba(79, 110, 247, 0.06);
+  --aurora-2: rgba(124, 140, 255, 0.04);
+  --aurora-3: rgba(79, 110, 247, 0.03);
+  --aurora-4: rgba(59, 86, 212, 0.02);
+
+  /* ── Shadows — warm-neutral, no blue tint ── */
+  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg:    0 10px 24px rgba(0, 0, 0, 0.10);
+  --shadow-xl:    0 20px 40px rgba(0, 0, 0, 0.12);
+  --shadow-glow:  0 4px 16px rgba(79, 110, 247, 0.18);
+  --shadow-glow-sm: 0 2px 8px rgba(79, 110, 247, 0.12);
+  /* Card shadow: spec-defined layered lift */
+  --shadow-card:
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /* ── Financial semantic — light-mode tuned ── */
+  --success:              #059669;   /* Emerald 600 — calmer than 500 on white */
+  --success-bg:           rgba(5, 150, 105, 0.08);
+  --success-border:       rgba(5, 150, 105, 0.22);
+  --danger:               #DC2626;   /* Red 600 — clear on white, not garish */
+  --danger-bg:            rgba(220, 38, 38, 0.08);
+  --danger-border:        rgba(220, 38, 38, 0.22);
+  --danger-hover:         #B91C1C;
+  --color-neutral:        #D97706;
+  --color-neutral-bg:     rgba(217, 119, 6, 0.09);
+
+  /* Legacy finance aliases */
+  --color-gain:           var(--success);
+  --color-gain-bg:        var(--success-bg);
+  --color-gain-border:    var(--success-border);
+  --color-loss:           var(--danger);
+  --color-loss-bg:        var(--danger-bg);
+  --color-loss-border:    var(--danger-border);
+  --color-loss-hover:     var(--danger-hover);
+  --risk-low:             #059669;
+  --risk-low-bg:          rgba(5, 150, 105, 0.10);
+  --risk-medium:          #D97706;
+  --risk-medium-bg:       rgba(217, 119, 6, 0.10);
+  --risk-high:            #DC2626;
+  --risk-high-bg:         rgba(220, 38, 38, 0.10);
 }
+

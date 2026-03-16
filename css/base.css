@@ -140,7 +140,7 @@ textarea {
     );
 }
 
-/* ── Navbar ── */
+/* ── Navbar — True Frosted Glass ── */
 .navbar {
   position: sticky;
   top: 0;
@@ -150,10 +150,20 @@ textarea {
   justify-content: space-between;
   padding: 0 var(--space-6);
   height: var(--navbar-height);
-  background: var(--bg-overlay);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-bottom: 1px solid var(--border-subtle);
+
+  /* ✦ KEY: low opacity lets content bleed through the blur */
+  background: rgba(10, 16, 36, 0.60);
+
+  /* ✦ Strong blur + colour boost = visible frost */
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+
+  /* ✦ Glass edge: bright top line + bottom divider glow */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),  /* glass highlight */
+    0 4px 24px rgba(0, 0, 0, 0.30);            /* depth shadow */
+
   transition:
     background 0.3s ease,
     box-shadow 0.3s ease,
@@ -161,9 +171,13 @@ textarea {
 }
 
 .navbar.scrolled {
-  background: var(--bg-overlay-dark);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.55);
-  border-bottom-color: var(--border-default);
+  background: rgba(8, 12, 26, 0.78);  /* slightly more opaque when scrolled */
+  backdrop-filter: blur(48px) saturate(220%);
+  -webkit-backdrop-filter: blur(48px) saturate(220%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 8px 40px rgba(0, 0, 0, 0.50);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
 .navbar__brand {
@@ -444,17 +458,25 @@ textarea {
   pointer-events: all;
 }
 
-/* ── Light Mode: Navbar & Nav ── */
+/* ── Light Mode: Navbar — Frosted White Glass ── */
 :root[data-theme="light"] .navbar {
-  background: #FFFFFF;
-  border-bottom: 1px solid #E2E8F0;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.90),  /* strong glass highlight */
+    0 4px 24px rgba(0, 0, 0, 0.07);
 }
 
 :root[data-theme="light"] .navbar.scrolled {
-  background: #FFFFFF;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  border-bottom-color: #E2E8F0;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(48px) saturate(200%);
+  -webkit-backdrop-filter: blur(48px) saturate(200%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 8px 32px rgba(0, 0, 0, 0.10);
+  border-bottom-color: rgba(0, 0, 0, 0.09);
 }
 
 :root[data-theme="light"] .navbar__link {
